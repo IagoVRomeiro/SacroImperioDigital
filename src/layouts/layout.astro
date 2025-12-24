@@ -35,6 +35,19 @@ const { title = "Terço de Rezas" } = Astro.props;
           <a class="nav-link" href="/santos-do-dia">Santo do Dia</a>
           <a class="nav-link" href="/servir">Servir</a>
         </nav>
+        <button class="mobile-nav-toggle" aria-label="Abrir menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+      <div class="mobile-nav">
+        <nav>
+          <a class="nav-link" href="/oracoes">Orações</a>
+          <a class="nav-link" href="/santo-rosario">Rosário</a>
+          <a class="nav-link" href="/santos-do-dia">Santo do Dia</a>
+          <a class="nav-link" href="/servir">Servir</a>
+        </nav>
       </div>
     </header>
     <main class="main-content">
@@ -58,5 +71,13 @@ const { title = "Terço de Rezas" } = Astro.props;
         </div>
       </div>
     </footer>
+    <script>
+      const toggleButton = document.querySelector('.mobile-nav-toggle');
+      const body = document.body;
+
+      toggleButton.addEventListener('click', () => {
+        body.classList.toggle('is-mobile-nav-open');
+      });
+    </script>
   </body>
 </html>
