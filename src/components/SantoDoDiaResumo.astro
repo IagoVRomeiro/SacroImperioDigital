@@ -1,18 +1,17 @@
 ---
-import { mesesOrdenados as meses2025, santosDoDia as santos2025 } from "../data/santos-do-dia";
-import { mesesOrdenados as meses2026, santosDoDia as santos2026 } from "../data/santos-do-dia-2026";
+import { mesesOrdenados, santosDoDia2025, santosDoDia2026 } from "../data/santos-do-dia";
 
 const now = new Date();
 const currentYear = now.getFullYear();
 const is2026 = currentYear === 2026;
-const mesesOrdenados = is2026 ? meses2026 : meses2025;
-const santosDoDia = is2026 ? santos2026 : santos2025;
+const santosDoDia = is2026 ? santosDoDia2026 : santosDoDia2025;
 const dayOfMonth = now.getDate();
 const monthKey = mesesOrdenados[now.getMonth()] ?? mesesOrdenados[0];
 const list = santosDoDia[monthKey] ?? [];
 const today = list.find((item) => item.day === dayOfMonth);
 const fallbackImage = "/assets/fundo.png";
-const image = today?.image ? encodeURI(today.image) : fallbackImage;
+const isExternal = (value?: string) => Boolean(value && /^https?:/i.test(value));
+const image = today?.image && !isExternal(today.image) ? encodeURI(today.image) : fallbackImage;
 ---
 
 <div class="santo-resumo motion-rise" style="--delay: 0.1s">

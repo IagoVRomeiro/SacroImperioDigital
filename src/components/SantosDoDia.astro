@@ -1,10 +1,12 @@
 ---
-import { mesesOrdenados, santosDoDia } from "../data/santos-do-dia-2026";
+import { mesesOrdenados, santosDoDia2025, santosDoDia2026 } from "../data/santos-do-dia";
 
 const now = new Date();
+const currentYear = now.getFullYear();
 const dayOfMonth = now.getDate();
 const toTitle = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
 const monthFromDate = mesesOrdenados[now.getMonth()] ?? mesesOrdenados[0];
+const santosDoDia = currentYear === 2026 ? santosDoDia2026 : santosDoDia2025;
 const mesesDisponiveis = mesesOrdenados.filter(
   (mes) => (santosDoDia[mes] ?? []).length > 0
 );
@@ -15,7 +17,9 @@ const initialToday = (santosDoDia[monthFromDate] ?? []).find((item) => item.day 
 const initialTitle = initialToday ? initialToday.title : "Sem dados para este dia";
 const initialDate = `Dia ${dayOfMonth} de ${toTitle(monthFromDate)}`;
 const fallbackImage = "/assets/fundo.png";
-const toSafeImage = (value?: string) => (value ? encodeURI(value) : fallbackImage);
+const isExternal = (value?: string) => Boolean(value && /^https?:/i.test(value));
+const toSafeImage = (value?: string) =>
+  value && !isExternal(value) ? encodeURI(value) : fallbackImage;
 
 const santosJson = JSON.stringify(santosDoDia);
 const mesesJson = JSON.stringify(mesesOrdenados);
@@ -90,11 +94,12 @@ const mesesSelectJson = JSON.stringify(mesesParaSelect);
   const summaryDate = container?.querySelector("[data-role='date']");
 
   const toTitle = (text) => text.charAt(0).toUpperCase() + text.slice(1);
-  const toSafeImage = (value) => (value ? encodeURI(value) : fallbackImage);
+  const toSafeImage = (value) => (value && !/^https?:/i.test(value) ? encodeURI(value) : fallbackImage);
 
   const renderCards = (mes) => {
     if (!grid) return;
     const lista = santosDoDia[mes] || [];
+    const isTodayMonth = mes === monthFromDate;
 
     if (!lista.length) {
       grid.innerHTML = `
@@ -113,7 +118,7 @@ const mesesSelectJson = JSON.stringify(mesesParaSelect);
     grid.innerHTML = lista
       .map(
         (item, index) => `
-          <article class="saint-card motion-rise ${item.day === dayOfMonth ? "is-today" : ""}" style="--delay: ${
+          <article class="saint-card motion-rise ${item.day === dayOfMonth && isTodayMonth ? "is-today" : ""}" style="--delay: ${
           0.1 + index * 0.04
         }s">
             <div class="card-media" style="background-image: url('${toSafeImage(item.image)}')"></div>
@@ -140,7 +145,6 @@ const mesesSelectJson = JSON.stringify(mesesParaSelect);
     if (!select) return;
     select.value = mes;
     renderCards(mes);
-    updateSummary();
   };
 
   const initialMonth = grid?.getAttribute("data-month");
@@ -149,12 +153,12 @@ const mesesSelectJson = JSON.stringify(mesesParaSelect);
   } else {
     setMonth(mesesParaSelect[0] || mesesOrdenados[new Date().getMonth()] || mesesOrdenados[0]);
   }
+  updateSummary();
 
   select?.addEventListener("change", (event) => {
     const target = event.target;
     if (target?.value) {
       renderCards(target.value);
-      updateSummary();
     }
   });
 

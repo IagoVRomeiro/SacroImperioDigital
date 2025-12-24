@@ -2,6 +2,7 @@
 layout: "../layouts/post-layout.astro"
 title: "Servir no Altar"
 wide: true
+backHref: "/"
 ---
 
 <style>

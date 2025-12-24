@@ -2,6 +2,8 @@
 import Layout from "../layouts/layout.astro";
 import SantoDoDiaResumo from "../components/SantoDoDiaResumo.astro";
 import LiturgiaDoDia from "../components/LiturgiaDoDia.astro";
+import { frasesDosSantos } from "../data/frases-dos-santos";
+const frasesJson = JSON.stringify(frasesDosSantos);
 ---
 
 <Layout title="Sacro Império Digital">
@@ -9,11 +11,11 @@ import LiturgiaDoDia from "../components/LiturgiaDoDia.astro";
     <section class="hero">
       <div class="container hero-inner">
         <div class="hero-kicker hero-kicker-dark fade-up" style="--delay: 0.1s">Sacro Império Digital</div>
-        <h1 class="hero-title fade-up" style="--delay: 0.2s">
-          Nosso cantinho de oração.
+        <h1 class="hero-title fade-up" style="--delay: 0.2s" data-role="frase">
+          Oracao cotidiana, liturgia e santos do dia
         </h1>
-        <p class="hero-subtitle fade-up" style="--delay: 0.3s">
-          Depois da minha morte, farei cair do Céu uma chuva de rosas.
+        <p class="hero-subtitle fade-up" style="--delay: 0.3s" data-role="autor">
+          Um guia direto para rezar e acompanhar a Igreja.
         </p>
         <div class="hero-actions fade-up" style="--delay: 0.4s">
           <a class="btn btn-primary" href="/rosario-do-dia">Iniciar o Rosário</a>
@@ -39,4 +41,17 @@ import LiturgiaDoDia from "../components/LiturgiaDoDia.astro";
     </section>
 
   </div>
+
+  <script define:vars={{ frasesJson }}>
+    const frases = JSON.parse(frasesJson);
+    const fraseEl = document.querySelector("[data-role='frase']");
+    const autorEl = document.querySelector("[data-role='autor']");
+
+    if (frases?.length && fraseEl && autorEl) {
+      const indice = Math.floor(Math.random() * frases.length);
+      const frase = frases[indice];
+      fraseEl.textContent = frase?.texto || fraseEl.textContent;
+      autorEl.textContent = frase?.autor || autorEl.textContent;
+    }
+  </script>
 </Layout>

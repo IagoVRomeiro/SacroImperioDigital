@@ -2,9 +2,10 @@
 import Layout from "../layouts/post-layout.astro";
 
 const title = "Rosário do Dia";
+const backHref = "/";
 ---
 
-<Layout frontmatter={{ title }}>
+<Layout frontmatter={{ title, backHref }}>
   <h1>Rosário do Dia</h1>
   <p>Redirecionando para os mistérios de hoje.</p>
   <p id="rosario-info">Carregando o mistério do dia.</p>
