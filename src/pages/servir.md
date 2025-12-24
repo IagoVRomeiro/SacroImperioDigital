@@ -75,12 +75,37 @@ Esta página é dedicada a quem serve no altar: acólitos e coroinhas. Aqui voc�
   </div>
 </div>
 
-## Organização do missal
+## Organização do Missal e Lecionário
 
-- Confirme o dia litúrgico e a cor do tempo.
-- Marque as orações: coleta, oferendas e pós-comunhão.
-- Separe as leituras em folhetos ou lecionário.
-- Deixe o missal aberto na mesa credência, pronto para o altar.
+A preparação cuidadosa do Missal e do Lecionário é essencial para uma celebração fluida e reverente. Siga estes passos para garantir que tudo esteja em ordem.
+
+### 1. Verifique o Calendário Litúrgico
+
+Antes de tudo, consulte o calendário litúrgico para identificar o dia (domingo, dia de semana, festa, solenidade) e o tempo litúrgico (Advento, Natal, Quaresma, Páscoa, Tempo Comum). Isso determinará as leituras, orações, prefácio e cor dos paramentos.
+
+### 2. Marcando o Missal com as Fitas
+
+O Missal Romano geralmente possui fitas de cores diferentes para marcar as partes da missa. Utilize-as da seguinte forma:
+
+- **Fita 1 (Ritos Iniciais):** Marque o início da missa. Esta seção raramente muda.
+- **Fita 2 (Orações do Dia):** Marque a **Oração da Coleta** (início da Liturgia da Palavra), a **Oração sobre as Oferendas** e a **Oração depois da Comunhão**. Essas orações são próprias de cada dia.
+- **Fita 3 (Prefácio):** Marque o prefácio do dia, que varia conforme o tempo litúrgico ou a festa celebrada.
+- **Fita 4 (Oração Eucarística):** Marque a Oração Eucarística escolhida pelo celebrante (I, II, III, IV, etc.).
+- **Fita 5 (Bênção Final):** Marque a bênção solene ou a oração sobre o povo, se houver.
+
+### 3. Preparando o Lecionário
+
+O Lecionário contém as leituras bíblicas. Dependendo da solenidade ou festa, pode ser necessário mais de um lecionário (Semanário, Dominical ou Santoral).
+
+- **Identifique as Leituras:** Localize a Primeira Leitura, o Salmo Responsorial, a Segunda Leitura (se houver) e o Evangelho para o dia.
+- **Marque as Páginas:** Utilize as fitas do lecionário para marcar o início de cada leitura.
+- **Folheto ou Livro de Preces:** Se a comunidade utilizar folhetos, verifique se as leituras coincidem. Se houver Livro de Preces, deixe-o no ambão.
+
+### 4. Dicas Adicionais
+
+- **Subsídios Litúrgicos:** Utilize folhetos como a "Liturgia Diária" para confirmar as leituras e orações.
+- **Comunicação:** Em caso de dúvida, não hesite em perguntar ao sacerdote ou a um membro experiente da equipe.
+- **Mesa de Credência:** Deixe o missal e outros objetos necessários (cálice, patena, galhetas) preparados na mesa de credência antes da missa.
 
 ## Itens que devem estar prontos
 
