@@ -1,0 +1,54 @@
+---
+import { liturgia2026 } from "../data/liturgia-2026";
+import { liturgiaDez2025 } from "../data/liturgia-2025-12";
+
+const now = new Date();
+const dateKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(
+  now.getDate()
+).padStart(2, "0")}`;
+const entry = liturgiaDez2025[dateKey] ?? liturgia2026[dateKey];
+
+const primeiraLeitura = entry?.primeiraLeitura;
+const salmo = entry?.salmo;
+const segundaLeitura = entry?.segundaLeitura;
+const evangelho = entry?.evangelho;
+---
+
+<section class="daily-section">
+  <div class="daily-card">
+    <div class="daily-content">
+      <div class="daily-kicker">Liturgia do Dia</div>
+      {primeiraLeitura && (
+        <>
+          <h3>Primeira Leitura ({primeiraLeitura.referencia})</h3>
+          <p class="daily-text">{primeiraLeitura.texto}</p>
+        </>
+      )}
+
+      {salmo && (
+        <>
+          <h3>Salmo Responsorial ({salmo.referencia})</h3>
+          <p class="daily-text">{salmo.texto}</p>
+        </>
+      )}
+
+      {segundaLeitura && (
+        <>
+          <h3>Segunda Leitura ({segundaLeitura.referencia})</h3>
+          <p class="daily-text">{segundaLeitura.texto}</p>
+        </>
+      )}
+
+      {evangelho && (
+        <>
+          <h3>Evangelho ({evangelho.referencia})</h3>
+          <p class="daily-text">{evangelho.texto}</p>
+        </>
+      )}
+
+      {!primeiraLeitura && !salmo && !segundaLeitura && !evangelho && (
+        <p class="daily-text">Sem liturgia local para este dia. O banco atual cobre 2026.</p>
+      )}
+    </div>
+  </div>
+</section>

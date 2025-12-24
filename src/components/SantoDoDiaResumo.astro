@@ -15,7 +15,7 @@ const fallbackImage = "/assets/fundo.png";
 const image = today?.image ? encodeURI(today.image) : fallbackImage;
 ---
 
-<div class="santo-resumo">
+<div class="santo-resumo motion-rise" style="--delay: 0.1s">
   <div class="santo-media" style={`background-image: url('${image}')`}></div>
   <div class="santo-body">
     <div class="santo-kicker">Santo do Dia</div>

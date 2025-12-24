@@ -42,7 +42,7 @@ const mesesSelectJson = JSON.stringify(mesesParaSelect);
     </div>
   </div>
 
-  <div class="santo-highlight">
+  <div class="santo-highlight motion-rise" style="--delay: 0.1s">
     <div class="santo-kicker">Santo do dia</div>
     <h3 class="santo-title" data-role="title">
       {initialTitle}
@@ -52,8 +52,11 @@ const mesesSelectJson = JSON.stringify(mesesParaSelect);
 
   <div class="santos-grid" data-month={initialMonth}>
     {initialList.length ? (
-      initialList.map((item) => (
-        <article class={`saint-card ${item.day === dayOfMonth ? "is-today" : ""}`}>
+      initialList.map((item, index) => (
+        <article
+          class={`saint-card motion-rise ${item.day === dayOfMonth ? "is-today" : ""}`}
+          style={`--delay: ${0.1 + index * 0.04}s`}
+        >
           <div class="card-media" style={`background-image: url('${toSafeImage(item.image)}')`}></div>
           <div class="card-footer">
             <div class="card-day">Dia {item.day}</div>
@@ -63,7 +66,7 @@ const mesesSelectJson = JSON.stringify(mesesParaSelect);
         </article>
       ))
     ) : (
-      <article class="saint-card is-empty">
+      <article class="saint-card motion-rise is-empty" style="--delay: 0.1s">
         <div class="card-media" style={`background-image: url('${fallbackImage}')`}></div>
         <div class="card-footer">
           <div class="card-day">Sem dados</div>
@@ -95,7 +98,7 @@ const mesesSelectJson = JSON.stringify(mesesParaSelect);
 
     if (!lista.length) {
       grid.innerHTML = `
-        <article class="saint-card is-empty">
+        <article class="saint-card motion-rise is-empty" style="--delay: 0.1s">
           <div class="card-media" style="background-image: url('${fallbackImage}')"></div>
           <div class="card-footer">
             <div class="card-day">Sem dados</div>
@@ -109,8 +112,10 @@ const mesesSelectJson = JSON.stringify(mesesParaSelect);
 
     grid.innerHTML = lista
       .map(
-        (item) => `
-          <article class="saint-card ${item.day === dayOfMonth ? "is-today" : ""}">
+        (item, index) => `
+          <article class="saint-card motion-rise ${item.day === dayOfMonth ? "is-today" : ""}" style="--delay: ${
+          0.1 + index * 0.04
+        }s">
             <div class="card-media" style="background-image: url('${toSafeImage(item.image)}')"></div>
             <div class="card-footer">
               <div class="card-day">Dia ${item.day}</div>
