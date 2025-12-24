@@ -1,0 +1,36 @@
+---
+import { liturgia2026 } from "../data/liturgia-2026";
+import { liturgiaDez2025 } from "../data/liturgia-2025-12";
+
+const now = new Date();
+const dateKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(
+  now.getDate()
+).padStart(2, "0")}`;
+const entry = liturgiaDez2025[dateKey] ?? liturgia2026[dateKey];
+const cleanText = (value?: string) => {
+  if (!value) return "";
+  const text = value
+    .replace(/<\/?div[^>]*>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\/div/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  const cutoff = text.search(/Missa da Vigilia|Missa da noite|Missa da Noite/i);
+  return cutoff > 0 ? text.slice(0, cutoff).trim() : text;
+};
+const evangelho = entry?.evangelho;
+---
+
+<section class="daily-section">
+  <div class="daily-card">
+    <div class="daily-content">
+      <div class="daily-kicker">Evangelho do Dia</div>
+      <h3>{evangelho?.referencia ? `Evangelho (${evangelho.referencia})` : "Evangelho do Dia"}</h3>
+      <p class="daily-text">
+        {evangelho?.texto
+          ? cleanText(evangelho.texto)
+          : "Sem evangelho local para este dia. O banco atual cobre 2026."}
+      </p>
+    </div>
+  </div>
+</section>

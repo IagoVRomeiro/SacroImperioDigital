@@ -1,0 +1,71 @@
+---
+import { mesesOrdenados as meses2025, santosDoDia as santos2025 } from "../data/santos-do-dia";
+import { mesesOrdenados as meses2026, santosDoDia as santos2026 } from "../data/santos-do-dia-2026";
+
+const now = new Date();
+const currentYear = now.getFullYear();
+const is2026 = currentYear === 2026;
+const mesesOrdenados = is2026 ? meses2026 : meses2025;
+const santosDoDia = is2026 ? santos2026 : santos2025;
+const dayOfMonth = now.getDate();
+const monthKey = mesesOrdenados[now.getMonth()] ?? mesesOrdenados[0];
+const list = santosDoDia[monthKey] ?? [];
+const today = list.find((item) => item.day === dayOfMonth);
+const fallbackImage = "/assets/fundo.png";
+const image = today?.image ? encodeURI(today.image) : fallbackImage;
+---
+
+<div class="santo-resumo">
+  <div class="santo-media" style={`background-image: url('${image}')`}></div>
+  <div class="santo-body">
+    <div class="santo-kicker">Santo do Dia</div>
+    <h3>{today ? today.title : "Sem dados para este dia"}</h3>
+    <p>Dia {dayOfMonth} de {monthKey}</p>
+  </div>
+</div>
+
+<style>
+  .santo-resumo {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: minmax(0, 1fr);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(210, 182, 117, 0.35);
+    background: rgba(8, 11, 18, 0.85);
+    box-shadow: 0 24px 40px rgba(0, 0, 0, 0.45);
+  }
+  .santo-media {
+    min-height: 240px;
+    background-size: cover;
+    background-position: center;
+  }
+  .santo-body {
+    padding: 1.6rem;
+  }
+  .santo-kicker {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: rgba(237, 240, 247, 0.6);
+    margin-bottom: 0.7rem;
+  }
+  .santo-body h3 {
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(1.6rem, 3vw, 2.3rem);
+    margin: 0 0 0.6rem;
+  }
+  .santo-body p {
+    margin: 0;
+    color: rgba(237, 240, 247, 0.7);
+    text-transform: capitalize;
+  }
+  @media (min-width: 900px) {
+    .santo-resumo {
+      grid-template-columns: 0.9fr 1.1fr;
+    }
+    .santo-media {
+      min-height: 100%;
+    }
+  }
+</style>

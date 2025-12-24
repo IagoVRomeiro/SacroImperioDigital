@@ -1,0 +1,13 @@
+---
+import Layout from "../layouts/post-layout.astro";
+import SantosDoDia from "../components/SantosDoDia.astro";
+
+const frontmatter = {
+  title: "Santos do Dia",
+  wide: true,
+};
+---
+
+<Layout frontmatter={frontmatter}>
+  <SantosDoDia />
+</Layout>

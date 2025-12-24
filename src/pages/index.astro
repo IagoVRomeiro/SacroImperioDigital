@@ -1,0 +1,51 @@
+---
+import Layout from "../layouts/layout.astro";
+import SalmoDoDia from "../components/SalmoDoDia.astro";
+import EvangelhoDoDia from "../components/EvangelhoDoDia.astro";
+import SantoDoDiaResumo from "../components/SantoDoDiaResumo.astro";
+---
+
+<Layout title="Sacro Império Digital">
+  <div class="home">
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-kicker hero-kicker-dark fade-up" style="--delay: 0.1s">Sacro Império Digital</div>
+        <h1 class="hero-title fade-up" style="--delay: 0.2s">
+          Nosso cantinho de oração.
+        </h1>
+        <p class="hero-subtitle fade-up" style="--delay: 0.3s">
+          Depois da minha morte, farei cair do Céu uma chuva de rosas.
+        </p>
+        <div class="hero-actions fade-up" style="--delay: 0.4s">
+          <a class="btn btn-primary" href="/rosario-do-dia">Iniciar o Rosário</a>
+          <a class="btn btn-outline" href="/oracoes">Explorar Orações</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section compact-section">
+      <div class="container">
+        <div class="fade-up" style="--delay: 0.3s">
+          <SantoDoDiaResumo />
+        </div>
+      </div>
+    </section>
+
+    <section class="section compact-section">
+      <div class="container">
+        <div class="fade-up" style="--delay: 0.3s">
+          <EvangelhoDoDia />
+        </div>
+      </div>
+    </section>
+
+    <section class="section compact-section">
+      <div class="container">
+        <div class="fade-up" style="--delay: 0.3s">
+          <SalmoDoDia />
+        </div>
+      </div>
+    </section>
+
+  </div>
+</Layout>

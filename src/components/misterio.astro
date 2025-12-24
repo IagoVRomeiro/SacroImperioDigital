@@ -1,0 +1,15 @@
+---
+import RezasMisterios from "./rezas-misterios.astro";
+
+type Props = {
+  title: string;
+};
+
+const { title } = Astro.props;
+---
+
+<section class="misterio">
+  <h3>{title}</h3>
+  <slot />
+  <RezasMisterios />
+</section>

@@ -1,0 +1,28 @@
+---
+import { LuArrowLeft } from "react-icons/lu";
+import Layout from "./layout.astro";
+
+type Props = {
+  frontmatter: {
+    title: string;
+    wide?: boolean;
+  };
+};
+
+const { frontmatter } = Astro.props;
+const isWide = Boolean(frontmatter?.wide);
+---
+
+<Layout title={frontmatter.title}>
+  <div class="container">
+    <div class="py-4">
+      <a href="/" class="inline-flex items-center gap-2 text-sm hover:underline">
+        <LuArrowLeft className="size-4" />
+        Voltar
+      </a>
+    </div>
+    <div class={`prose mx-auto my-12 w-full ${isWide ? "max-w-[1200px]" : "max-w-[80ch]"} font-serif`}>
+      <slot />
+    </div>
+  </div>
+</Layout>

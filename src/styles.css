@@ -1,0 +1,452 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Manrope:wght@300;400;600&display=swap");
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+:root {
+  --root-bg: #0b0e15;
+  --color-base-content: #edf0f7;
+  --paper: #0b0e15;
+  --ink: #edf0f7;
+  --muted: rgba(237, 240, 247, 0.68);
+  --accent: #d2b675;
+  --accent-deep: #8c6b2f;
+  --accent-soft: rgba(210, 182, 117, 0.2);
+  --panel: rgba(11, 14, 21, 0.78);
+  --shadow-soft: rgba(3, 4, 8, 0.45);
+  --shadow-strong: rgba(0, 0, 0, 0.7);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Manrope", "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(88, 108, 164, 0.2), transparent 40%),
+    radial-gradient(circle at 80% 0%, rgba(76, 115, 102, 0.2), transparent 45%),
+    linear-gradient(180deg, rgba(9, 12, 18, 0.7), rgba(5, 6, 9, 0.95)),
+    #050609;
+  color: var(--ink);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-shell {
+  min-height: 100vh;
+}
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: --spacing(8);
+}
+
+.main-content {
+  padding-top: 120px;
+  padding-bottom: 96px;
+}
+
+.site-header {
+  position: fixed;
+  top: 0;
+  z-index: 20;
+  width: 100%;
+  background: linear-gradient(180deg, rgba(7, 9, 14, 0.92), rgba(7, 9, 14, 0.4));
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(210, 182, 117, 0.14);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-block: 20px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(210, 182, 117, 0.4);
+  box-shadow: 0 12px 24px rgba(2, 4, 9, 0.6);
+}
+
+.brand-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.02em;
+}
+
+.brand-subtitle {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  color: rgba(237, 240, 247, 0.6);
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.nav-link {
+  position: relative;
+  padding-bottom: 6px;
+  color: rgba(237, 240, 247, 0.75);
+  transition: color 0.3s ease;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 1px;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover {
+  color: var(--ink);
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 180px 0 160px;
+  background:
+    linear-gradient(180deg, rgba(7, 9, 14, 0.25) 0%, rgba(7, 9, 14, 0.86) 70%),
+    url("/assets/fundo.png") center/cover no-repeat;
+  border-bottom: 1px solid rgba(210, 182, 117, 0.15);
+}
+
+.home {
+  margin-top: -120px;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(210, 182, 117, 0.25), transparent 45%),
+    radial-gradient(circle at 80% 0%, rgba(70, 110, 154, 0.22), transparent 40%);
+  mix-blend-mode: screen;
+  opacity: 0.6;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 32px;
+  max-width: 880px;
+}
+
+.hero-kicker {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  color: rgba(237, 240, 247, 0.6);
+}
+
+.hero-kicker-dark {
+  color: rgba(237, 240, 247, 0.8);
+}
+
+.hero-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(2.8rem, 5vw, 4.6rem);
+  line-height: 1.05;
+}
+
+.hero-subtitle {
+  font-size: 1.05rem;
+  color: var(--muted);
+  max-width: 560px;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 26px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #1c1405;
+  box-shadow: 0 14px 30px rgba(210, 182, 117, 0.3);
+}
+
+.btn-outline {
+  border: 1px solid rgba(237, 240, 247, 0.4);
+  color: var(--ink);
+  background: rgba(11, 14, 21, 0.35);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.section {
+  padding: 90px 0;
+}
+
+.compact-section {
+  padding: 48px 0;
+}
+
+.compact-section + .compact-section {
+  padding-top: 24px;
+}
+
+.section-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  text-align: center;
+}
+
+.section-subtitle {
+  text-align: center;
+  color: var(--muted);
+  max-width: 620px;
+  margin: 12px auto 0;
+}
+
+.feature-grid {
+  display: grid;
+  gap: 24px;
+  margin-top: 48px;
+}
+
+.daily-section {
+  margin-top: 2rem;
+}
+
+.daily-card {
+  border-radius: 20px;
+  border: 1px solid rgba(210, 182, 117, 0.2);
+  background: rgba(8, 11, 18, 0.85);
+  box-shadow: 0 24px 40px rgba(0, 0, 0, 0.45);
+}
+
+.daily-content {
+  padding: 1.8rem;
+}
+
+.daily-kicker {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: rgba(237, 240, 247, 0.6);
+  margin-bottom: 0.8rem;
+}
+
+.daily-content h3 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(1.6rem, 2.8vw, 2.3rem);
+  margin: 0 0 0.6rem;
+}
+
+.daily-text {
+  color: rgba(237, 240, 247, 0.78);
+  line-height: 1.7;
+}
+
+
+.feature-card {
+  position: relative;
+  border-radius: 24px;
+  padding: 30px;
+  min-height: 280px;
+  background:
+    linear-gradient(180deg, rgba(12, 15, 23, 0.2), rgba(7, 9, 14, 0.85)),
+    var(--card-bg);
+  background-size: cover;
+  box-shadow: 0 28px 60px var(--shadow-strong);
+  overflow: hidden;
+}
+
+.feature-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 20%, rgba(210, 182, 117, 0.25), transparent 45%);
+  opacity: 0.7;
+}
+
+.feature-card-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 8px;
+  height: 100%;
+}
+
+.feature-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(237, 240, 247, 0.6);
+}
+
+.feature-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.6rem;
+}
+
+.feature-meta {
+  font-size: 0.85rem;
+  color: rgba(237, 240, 247, 0.65);
+}
+
+.journal-grid {
+  display: grid;
+  gap: 32px;
+  margin-top: 48px;
+}
+
+.journal-card {
+  background: rgba(10, 12, 18, 0.7);
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1px solid rgba(210, 182, 117, 0.16);
+  box-shadow: 0 24px 45px rgba(0, 0, 0, 0.45);
+}
+
+.journal-media {
+  height: 220px;
+  background: var(--card-bg);
+  background-size: cover;
+  background-position: center;
+}
+
+.journal-body {
+  padding: 24px;
+}
+
+.journal-date {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: rgba(237, 240, 247, 0.55);
+}
+
+.journal-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.5rem;
+  margin-top: 12px;
+}
+
+.journal-text {
+  margin-top: 10px;
+  color: var(--muted);
+}
+
+
+.fade-up {
+  opacity: 0;
+  animation: fadeUp 1s ease forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.prose {
+  --tw-prose-body: inherit;
+  font-size: 1.15rem;
+  line-height: 1.9;
+}
+
+.font-serif {
+  font-family: "Cormorant Garamond", serif;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  font-family: "Cormorant Garamond", serif;
+  color: var(--ink);
+}
+
+.prose strong,
+.prose em,
+.prose a {
+  color: inherit;
+}
+
+footer {
+  background: rgba(7, 9, 14, 0.95);
+  border-top: 1px solid rgba(210, 182, 117, 0.15);
+}
+
+@media (min-width: 900px) {
+  .feature-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .journal-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .salmos-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .site-nav {
+    display: none;
+  }
+
+  .hero {
+    padding: 150px 0 120px;
+  }
+}
+
+[x-cloak] {
+  display: none !important;
+}
