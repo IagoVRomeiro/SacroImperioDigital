@@ -67,14 +67,6 @@ export const frasesDosSantos: FraseSanto[] = [
     "autor": "Teresa de Ávila"
   },
   {
-    "texto": "João Bosco - santo italiano, canonizado em 1934.",
-    "autor": "João Bosco"
-  },
-  {
-    "texto": "João Bosco - cantor, compositor e violonista brasileiro.",
-    "autor": "João Bosco"
-  },
-  {
     "texto": "\"Estes só Nossa Senhora\".",
     "autor": "Padre Pio"
   },
