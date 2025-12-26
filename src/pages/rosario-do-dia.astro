@@ -24,7 +24,11 @@ const backHref = "/";
   </noscript>
 
   <script>
-    const day = new Date().getDay();
+    const now = new Date();
+    const brasiliaNow = new Date(
+      now.toLocaleString("en-US", { timeZone: "America/Sao_Paulo" })
+    );
+    const day = brasiliaNow.getDay();
     const routes = {
       0: {
         label: "Domingo - Mistérios Gloriosos",

@@ -1,48 +1,100 @@
 ---
 import { liturgia2026 } from "../data/liturgia-2026";
 import { liturgiaDez2025 } from "../data/liturgia-2025-12";
+import { getBrasiliaDateParts } from "../utils/brasilia-date";
 
-const now = new Date();
-const dateKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(
-  now.getDate()
-).padStart(2, "0")}`;
-const entry = liturgiaDez2025[dateKey] ?? liturgia2026[dateKey];
+const { year, month, day } = getBrasiliaDateParts();
+const monthPad = String(month).padStart(2, "0");
+const dayPad = String(day).padStart(2, "0");
+const dateKey = `${year}-${monthPad}-${dayPad}`;
+const fallback2026Key = `2026-${monthPad}-${dayPad}`;
+const entry =
+  liturgiaDez2025[dateKey] ??
+  liturgia2026[dateKey] ??
+  liturgia2026[fallback2026Key];
 
 const primeiraLeitura = entry?.primeiraLeitura;
 const salmo = entry?.salmo;
 const segundaLeitura = entry?.segundaLeitura;
 const evangelho = entry?.evangelho;
+
+const processLiturgiaText = (value?: string): string => {
+  if (!value) return "";
+
+  // Replace common HTML entities and line breaks
+  let text = value
+    .replace(/&amp;/g, "&")
+    .replace(/&oacute;/g, "ó")
+    .replace(/&atilde;/g, "ã")
+    .replace(/&ccedil;/g, "ç")
+    .replace(/&eacute;/g, "é")
+    .replace(/&iacute;/g, "í")
+    .replace(/&uacute;/g, "ú")
+    .replace(/&aacute;/g, "á")
+    .replace(/&ecirc;/g, "ê")
+    .replace(/&otilde;/g, "õ")
+    .replace(/&uuml;/g, "ü")
+    .replace(/&ordf;/g, "ª")
+    .replace(/&ordm;/g, "º")
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&ndash;/g, "–")
+    .replace(/<br\s*\/?>/gi, "\n") // Replace <br> with newlines
+    .replace(/<\/?div[^>]*>/gi, "") // Remove <div> tags
+    .replace(/<[^>]+>/g, "")       // Remove any remaining HTML tags
+    .replace(/\s+/g, " ")          // Normalize whitespace
+    .trim();
+
+  // Try to extract "Missa da manhã" or "Missa do dia"
+  const missaManhaMatch = text.match(/Missa da manhã(.*?)Missa/is);
+  if (missaManhaMatch && missaManhaMatch[1]) {
+    return missaManhaMatch[1].trim();
+  }
+
+  const missaDiaMatch = text.match(/Missa do dia(.*?)Missa/is);
+  if (missaDiaMatch && missaDiaMatch[1]) {
+    return missaDiaMatch[1].trim();
+  }
+
+  // If "Missa da manhã" or "Missa do dia" not found, try to cut off at "Missa da Vigília" or similar
+  const cutoffMatch = text.match(/Missa da Vigília|Missa da Noite|Missa da noite/i);
+  if (cutoffMatch) {
+    return text.substring(0, cutoffMatch.index).trim();
+  }
+
+  return text;
+};
 ---
 
 <section class="daily-section">
   <div class="daily-card">
     <div class="daily-content">
       <div class="daily-kicker">Liturgia do Dia</div>
-      {primeiraLeitura && (
+      {primeiraLeitura?.texto && (
         <>
           <h3>Primeira Leitura ({primeiraLeitura.referencia})</h3>
-          <p class="daily-text">{primeiraLeitura.texto}</p>
+          <p class="daily-text" set:html={processLiturgiaText(primeiraLeitura.texto)} />
         </>
       )}
 
-      {salmo && (
+      {salmo?.texto && (
         <>
           <h3>Salmo Responsorial ({salmo.referencia})</h3>
-          <p class="daily-text">{salmo.texto}</p>
+          <p class="daily-text" set:html={processLiturgiaText(salmo.texto)} />
         </>
       )}
 
-      {segundaLeitura && (
+      {segundaLeitura?.texto && (
         <>
           <h3>Segunda Leitura ({segundaLeitura.referencia})</h3>
-          <p class="daily-text">{segundaLeitura.texto}</p>
+          <p class="daily-text" set:html={processLiturgiaText(segundaLeitura.texto)} />
         </>
       )}
 
-      {evangelho && (
+      {evangelho?.texto && (
         <>
           <h3>Evangelho ({evangelho.referencia})</h3>
-          <p class="daily-text">{evangelho.texto}</p>
+          <p class="daily-text" set:html={processLiturgiaText(evangelho.texto)} />
         </>
       )}
 

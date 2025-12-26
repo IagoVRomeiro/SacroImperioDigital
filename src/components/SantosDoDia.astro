@@ -1,11 +1,10 @@
 ---
 import { mesesOrdenados, santosDoDia2025, santosDoDia2026 } from "../data/santos-do-dia";
+import { getBrasiliaDateParts } from "../utils/brasilia-date";
 
-const now = new Date();
-const currentYear = now.getFullYear();
-const dayOfMonth = now.getDate();
+const { year: currentYear, day: dayOfMonth, monthIndex } = getBrasiliaDateParts();
 const toTitle = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
-const monthFromDate = mesesOrdenados[now.getMonth()] ?? mesesOrdenados[0];
+const monthFromDate = mesesOrdenados[monthIndex] ?? mesesOrdenados[0];
 const santosDoDia = currentYear === 2026 ? santosDoDia2026 : santosDoDia2025;
 const mesesDisponiveis = mesesOrdenados.filter(
   (mes) => (santosDoDia[mes] ?? []).length > 0
@@ -24,6 +23,12 @@ const toSafeImage = (value?: string) =>
 const santosJson = JSON.stringify(santosDoDia);
 const mesesJson = JSON.stringify(mesesOrdenados);
 const mesesSelectJson = JSON.stringify(mesesParaSelect);
+const toSlug = (text: string) =>
+  text
+    .toLowerCase()
+    .replace(/[^a-z0-9 -]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
 ---
 
 <section class="santos-do-dia" aria-live="polite">
@@ -57,17 +62,19 @@ const mesesSelectJson = JSON.stringify(mesesParaSelect);
   <div class="santos-grid" data-month={initialMonth}>
     {initialList.length ? (
       initialList.map((item, index) => (
-        <article
-          class={`saint-card motion-rise ${item.day === dayOfMonth ? "is-today" : ""}`}
-          style={`--delay: ${0.1 + index * 0.04}s`}
-        >
-          <div class="card-media" style={`background-image: url('${toSafeImage(item.image)}')`}></div>
-          <div class="card-footer">
-            <div class="card-day">Dia {item.day}</div>
-            <h3>{item.title}</h3>
-            <p>{toTitle(initialMonth)}</p>
-          </div>
-        </article>
+        <a href={`/santos/${initialMonth}/${item.day}/${toSlug(item.title)}`} class="saint-card-link">
+          <article
+            class={`saint-card motion-rise ${item.day === dayOfMonth ? "is-today" : ""}`}
+            style={`--delay: ${0.1 + index * 0.04}s`}
+          >
+            <div class="card-media" style={`background-image: url('${toSafeImage(item.image)}')`}></div>
+            <div class="card-footer">
+              <div class="card-day">Dia {item.day}</div>
+              <h3>{item.title}</h3>
+              <p>{toTitle(initialMonth)}</p>
+            </div>
+          </article>
+        </a>
       ))
     ) : (
       <article class="saint-card motion-rise is-empty" style="--delay: 0.1s">
@@ -95,6 +102,12 @@ const mesesSelectJson = JSON.stringify(mesesParaSelect);
 
   const toTitle = (text) => text.charAt(0).toUpperCase() + text.slice(1);
   const toSafeImage = (value) => (value && !/^https?:/i.test(value) ? encodeURI(value) : fallbackImage);
+  const toSlug = (text) =>
+    text
+      .toLowerCase()
+      .replace(/[^a-z0-9 -]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-");
 
   const renderCards = (mes) => {
     if (!grid) return;
@@ -118,16 +131,18 @@ const mesesSelectJson = JSON.stringify(mesesParaSelect);
     grid.innerHTML = lista
       .map(
         (item, index) => `
-          <article class="saint-card motion-rise ${item.day === dayOfMonth && isTodayMonth ? "is-today" : ""}" style="--delay: ${
+          <a href="/santos/${mes}/${item.day}/${toSlug(item.title)}" class="saint-card-link">
+            <article class="saint-card motion-rise ${item.day === dayOfMonth && isTodayMonth ? "is-today" : ""}" style="--delay: ${
           0.1 + index * 0.04
         }s">
-            <div class="card-media" style="background-image: url('${toSafeImage(item.image)}')"></div>
-            <div class="card-footer">
-              <div class="card-day">Dia ${item.day}</div>
-              <h3>${item.title}</h3>
-              <p>${toTitle(mes)}</p>
-            </div>
-          </article>
+              <div class="card-media" style="background-image: url('${toSafeImage(item.image)}')"></div>
+              <div class="card-footer">
+                <div class="card-day">Dia ${item.day}</div>
+                <h3>${item.title}</h3>
+                <p>${toTitle(mes)}</p>
+              </div>
+            </article>
+          </a>
         `
       )
       .join("");
@@ -151,7 +166,7 @@ const mesesSelectJson = JSON.stringify(mesesParaSelect);
   if (initialMonth) {
     setMonth(initialMonth);
   } else {
-    setMonth(mesesParaSelect[0] || mesesOrdenados[new Date().getMonth()] || mesesOrdenados[0]);
+    setMonth(mesesParaSelect[0] || monthFromDate || mesesOrdenados[0]);
   }
   updateSummary();
 

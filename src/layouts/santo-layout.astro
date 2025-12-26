@@ -1,0 +1,34 @@
+---
+import Layout from "./layout.astro";
+
+type Props = {
+  frontmatter: {
+    title: string;
+    subtitle?: string;
+    image?: string;
+  };
+};
+
+const { frontmatter } = Astro.props;
+const imageUrl = frontmatter?.image ?? "/assets/fundo.png";
+const subtitle = frontmatter?.subtitle ?? "Biografia do santo";
+---
+
+<Layout title={frontmatter.title}>
+  <div class="container">
+    <div
+      class="saint-hero"
+      style={`--saint-image: url('${imageUrl}')`}
+    >
+      <div class="saint-hero-inner">
+        <h1 class="saint-hero-title">{frontmatter.title}</h1>
+        <div class="saint-hero-rule" aria-hidden="true"></div>
+        <p class="saint-hero-subtitle">{subtitle}</p>
+      </div>
+    </div>
+
+    <div class="saint-description prose mx-auto max-w-[80ch] font-serif">
+      <slot />
+    </div>
+  </div>
+</Layout>

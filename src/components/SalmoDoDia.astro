@@ -1,11 +1,10 @@
 ---
 import { liturgia2026 } from "../data/liturgia-2026";
 import { liturgiaDez2025 } from "../data/liturgia-2025-12";
+import { getBrasiliaDateParts } from "../utils/brasilia-date";
 
-const now = new Date();
-const dateKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(
-  now.getDate()
-).padStart(2, "0")}`;
+const { year, month, day } = getBrasiliaDateParts();
+const dateKey = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 const entry = liturgiaDez2025[dateKey] ?? liturgia2026[dateKey];
 const cleanText = (value?: string) => {
   if (!value) return "";
