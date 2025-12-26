@@ -16,6 +16,7 @@ const subtitle = frontmatter?.subtitle ?? "Biografia do santo";
 
 <Layout title={frontmatter.title}>
   <div class="container">
+    <a href="/santos-do-dia" class="back-to-saints-link">← Voltar para Santos</a>
     <div
       class="saint-hero"
       style={`--saint-image: url('${imageUrl}')`}
@@ -32,3 +33,19 @@ const subtitle = frontmatter?.subtitle ?? "Biografia do santo";
     </div>
   </div>
 </Layout>
+
+<style is:global>
+  .back-to-saints-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s ease;
+  }
+  .back-to-saints-link:hover {
+    color: var(--accent-light);
+  }
+</style>
