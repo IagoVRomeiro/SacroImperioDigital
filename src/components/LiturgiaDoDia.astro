@@ -1,22 +1,19 @@
 ---
-import { liturgia2026 } from "../data/liturgia-2026";
-import { liturgiaDez2025 } from "../data/liturgia-2025-12";
+import { liturgia } from "../data/liturgia";
 import { getBrasiliaDateParts } from "../utils/brasilia-date";
 
 const { year, month, day } = getBrasiliaDateParts();
 const monthPad = String(month).padStart(2, "0");
 const dayPad = String(day).padStart(2, "0");
 const dateKey = `${year}-${monthPad}-${dayPad}`;
-const fallback2026Key = `2026-${monthPad}-${dayPad}`;
-const entry =
-  liturgiaDez2025[dateKey] ??
-  liturgia2026[dateKey] ??
-  liturgia2026[fallback2026Key];
+const entry = liturgia[dateKey]
 
 const primeiraLeitura = entry?.primeiraLeitura;
 const salmo = entry?.salmo;
 const segundaLeitura = entry?.segundaLeitura;
 const evangelho = entry?.evangelho;
+const hasEntry = Boolean(entry);
+
 
 const processLiturgiaText = (value?: string): string => {
   if (!value) return "";
@@ -70,35 +67,39 @@ const processLiturgiaText = (value?: string): string => {
   <div class="daily-card">
     <div class="daily-content">
       <div class="daily-kicker">Liturgia do Dia</div>
-      {primeiraLeitura?.texto && (
+      {hasEntry ? (
         <>
-          <h3>Primeira Leitura ({primeiraLeitura.referencia})</h3>
-          <p class="daily-text" set:html={processLiturgiaText(primeiraLeitura.texto)} />
-        </>
-      )}
+          <h3>{evangelho?.referencia ? `Evangelho (${evangelho.referencia})` : "Evangelho"}</h3>
+          <p class="daily-text">
+            {evangelho?.texto
+              ? processLiturgiaText(evangelho.texto)
+              : "Sem evangelho local para este dia."}
+          </p>
 
-      {salmo?.texto && (
-        <>
-          <h3>Salmo Responsorial ({salmo.referencia})</h3>
-          <p class="daily-text" set:html={processLiturgiaText(salmo.texto)} />
-        </>
-      )}
+          <h3>
+            {primeiraLeitura?.referencia
+              ? `Primeira Leitura (${primeiraLeitura.referencia})`
+              : "Primeira Leitura"}
+          </h3>
+          <p class="daily-text">
+            {primeiraLeitura?.texto
+              ? processLiturgiaText(primeiraLeitura.texto)
+              : "Sem primeira leitura local para este dia."}
+          </p>
 
-      {segundaLeitura?.texto && (
-        <>
-          <h3>Segunda Leitura ({segundaLeitura.referencia})</h3>
-          <p class="daily-text" set:html={processLiturgiaText(segundaLeitura.texto)} />
-        </>
-      )}
+          {segundaLeitura?.texto && (
+            <>
+              <h3>Segunda Leitura ({segundaLeitura.referencia})</h3>
+              <p class="daily-text" set:html={processLiturgiaText(segundaLeitura.texto)} />
+            </>
+          )}
 
-      {evangelho?.texto && (
-        <>
-          <h3>Evangelho ({evangelho.referencia})</h3>
-          <p class="daily-text" set:html={processLiturgiaText(evangelho.texto)} />
+          <h3>{salmo?.referencia ? `Salmo do Dia (${salmo.referencia})` : "Salmo do Dia"}</h3>
+          <p class="daily-text">
+            {salmo?.texto ? processLiturgiaText(salmo.texto) : "Sem salmo local para este dia."}
+          </p>
         </>
-      )}
-
-      {!primeiraLeitura && !salmo && !segundaLeitura && !evangelho && (
+      ) : (
         <p class="daily-text">Sem liturgia local para este dia. O banco atual cobre 2026.</p>
       )}
     </div>

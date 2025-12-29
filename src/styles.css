@@ -308,12 +308,6 @@ a {
   margin: 12px auto 0;
 }
 
-.feature-grid {
-  display: grid;
-  gap: 24px;
-  margin-top: 48px;
-}
-
 .daily-section {
   margin-top: 2rem;
 }
@@ -349,85 +343,6 @@ a {
 }
 
 
-.feature-card {
-  position: relative;
-  border-radius: 24px;
-  padding: 30px;
-  min-height: 280px;
-  background:
-    linear-gradient(180deg, rgba(12, 15, 23, 0.2), rgba(7, 9, 14, 0.85)),
-    var(--card-bg);
-  background-size: cover;
-  box-shadow: 0 28px 60px var(--shadow-strong);
-  overflow: hidden;
-}
-
-.feature-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 20% 20%, rgba(210, 182, 117, 0.25), transparent 45%);
-  opacity: 0.7;
-}
-
-.feature-card-content {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 8px;
-  height: 100%;
-}
-
-.feature-label {
-  font-size: 0.7rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: rgba(237, 240, 247, 0.6);
-}
-
-.feature-title {
-  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
-  font-size: 1.6rem;
-}
-
-.feature-meta {
-  font-size: 0.85rem;
-  color: rgba(237, 240, 247, 0.65);
-}
-
-.journal-grid {
-  display: grid;
-  gap: 32px;
-  margin-top: 48px;
-}
-
-.journal-card {
-  background: rgba(10, 12, 18, 0.7);
-  border-radius: 22px;
-  overflow: hidden;
-  border: 1px solid rgba(210, 182, 117, 0.16);
-  box-shadow: 0 24px 45px rgba(0, 0, 0, 0.45);
-}
-
-.journal-media {
-  height: 220px;
-  background: var(--card-bg);
-  background-size: cover;
-  background-position: center;
-}
-
-.journal-body {
-  padding: 24px;
-}
-
-.journal-date {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.28em;
-  color: rgba(237, 240, 247, 0.55);
-}
 
 .journal-title {
   font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
@@ -569,20 +484,6 @@ a {
 footer {
   background: rgba(7, 9, 14, 0.95);
   border-top: 1px solid rgba(210, 182, 117, 0.15);
-}
-
-@media (min-width: 900px) {
-  .feature-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .journal-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .salmos-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
 }
 
 @media (max-width: 900px) {
