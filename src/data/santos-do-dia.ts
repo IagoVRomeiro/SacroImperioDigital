@@ -839,18 +839,18 @@ export const santosDoDia2025: Record<string, SantoDoDia[]> = {
 };
 
 export const santosDoDia2026: Record<string, SantoDoDia[]> = {
-  janeiro2026,
-  fevereiro2026,
-  marco2026,
-  abril2026,
-  maio2026,
-  junho2026,
-  julho2026,
-  agosto2026,
-  setembro2026,
-  outubro2026,
-  novembro2026,
-  dezembro2026,
+  janeiro: janeiro2026,
+  fevereiro: fevereiro2026,
+  marco: marco2026,
+  abril: abril2026,
+  maio: maio2026,
+  junho: junho2026,
+  julho: julho2026,
+  agosto: agosto2026,
+  setembro: setembro2026,
+  outubro: outubro2026,
+  novembro: novembro2026,
+  dezembro: dezembro2026,
 };
 
 export const santosDoDiaPorAno: Record<string, Record<string, SantoDoDia[]>> = {
