@@ -1,4 +1,4 @@
-type LiturgiaTexto = { referencia: string; texto: string; };
+type LiturgiaTexto = { referencia: string; texto: string; titulo?: string; refrao?: string; };
 
 export const liturgia: Record<string, { primeiraLeitura?: LiturgiaTexto; salmo: LiturgiaTexto; segundaLeitura?: LiturgiaTexto; evangelho: LiturgiaTexto; }> = {
   "2025-12-01": {
