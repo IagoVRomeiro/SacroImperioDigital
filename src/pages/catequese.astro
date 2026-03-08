@@ -42,7 +42,7 @@ const audios = [
     </div>
   </div>
 
-  <script>
+  <script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
       const audioElements = document.querySelectorAll('.catequese-audio');
       
@@ -50,15 +50,24 @@ const audios = [
         const loadingIndicator = audio.previousElementSibling;
         
         if (loadingIndicator) {
+          // Quando tenta carregar os dados
           audio.addEventListener('loadstart', () => loadingIndicator.classList.remove('hidden'));
+          // Quando clica em play mas ainda tá baixando o buffer
           audio.addEventListener('waiting', () => loadingIndicator.classList.remove('hidden'));
           
+          // Quando já baixou o suficiente pra tocar
           audio.addEventListener('canplay', () => loadingIndicator.classList.add('hidden'));
+          // Quando efetivamente começa a tocar
           audio.addEventListener('playing', () => loadingIndicator.classList.add('hidden'));
+          // Quando pausa
           audio.addEventListener('pause', () => loadingIndicator.classList.add('hidden'));
+          // Em caso de erro
+          audio.addEventListener('error', () => {
+             loadingIndicator.textContent = "Erro ao carregar o áudio.";
+             loadingIndicator.classList.remove('hidden');
+          });
         }
       });
     });
   </script>
-  </div>
 </Layout>
