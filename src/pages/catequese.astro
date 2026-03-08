@@ -1,0 +1,34 @@
+---
+import Layout from "../layouts/layout.astro";
+
+const audios = [
+  { title: "Catebunker - Aula 02", url: "/audios/Catebunker_aula02.mp3" },
+  { title: "Catebunker - Aula 03", url: "/audios/catebunker_aula03.mp3" },
+  { title: "Catebunker - Aula 04", url: "/audios/Catebunker_aula04.mp3" },
+  { title: "Catebunker - Aula 05", url: "/audios/Catebunker_aula05.mp3" },
+  { title: "Catebunker - Aula 06", url: "/audios/Catebunker_aula06.mp3" },
+  { title: "Catebunker - Aula 07", url: "/audios/Catebunker_aula07.mp3" },
+  { title: "Excerto São Mateus 8:21", url: "/audios/excerto_Sao_Mateus_8_21.mp3" },
+  { title: "Sobre Confissão", url: "/audios/Sobre_Confissao.mp3" }
+];
+---
+
+<Layout title="Catequese">
+  <div class="container py-10">
+    <div class="flex flex-col items-center justify-center text-center mb-10">
+      <h1 class="text-4xl font-serif text-[color:var(--accent-deep)] mb-4">Catequese do BlackSheep</h1>
+    </div>
+    
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {audios.map((audio) => (
+        <div class="flex flex-col p-6 rounded-2xl border border-[color:var(--accent-soft)] bg-[color:var(--paper)] shadow-[0_4px_12px_var(--shadow-soft)] transition-transform hover:-translate-y-1">
+          <h2 class="text-xl font-serif font-medium mb-4 text-[color:var(--accent-deep)]">{audio.title}</h2>
+          <audio controls class="w-full mt-auto">
+            <source src={audio.url} type="audio/mpeg" />
+            Seu navegador não suporta o elemento de áudio.
+          </audio>
+        </div>
+      ))}
+    </div>
+  </div>
+</Layout>
