@@ -21,17 +21,21 @@ const audios = [
     
     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {audios.map((audio) => (
-        <div class="flex flex-col p-6 rounded-2xl border border-[color:var(--accent-soft)] bg-[color:var(--paper)] shadow-[0_4px_12px_var(--shadow-soft)] transition-transform hover:-translate-y-1">
+        <div class="flex flex-col p-6 rounded-2xl border border-[color:var(--accent-soft)] bg-[color:var(--paper)] shadow-[0_4px_12px_var(--shadow-soft)] transition-transform hover:-translate-y-1 relative">
           <h2 class="text-xl font-serif font-medium mb-4 text-[color:var(--accent-deep)]">{audio.title}</h2>
           
           <div class="audio-container mt-auto relative">
-            <div class="loading-indicator text-sm text-[color:var(--accent-deep)] opacity-70 mb-2 italic hidden">
-              Carregando áudio, por favor aguarde...
+            <div class="loading-indicator text-sm font-semibold text-[color:var(--accent-deep)] mb-2 italic flex items-center gap-2 hidden">
+              <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-[color:var(--accent-deep)]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Carregando áudio...
             </div>
             <audio 
               controls 
               class="w-full catequese-audio" 
-              preload="none"
+              preload="metadata"
             >
               <source src={audio.url} type="audio/mpeg" />
               Seu navegador não suporta o elemento de áudio.
@@ -50,20 +54,16 @@ const audios = [
         const loadingIndicator = audio.previousElementSibling;
         
         if (loadingIndicator) {
-          // Quando tenta carregar os dados
           audio.addEventListener('loadstart', () => loadingIndicator.classList.remove('hidden'));
-          // Quando clica em play mas ainda tá baixando o buffer
           audio.addEventListener('waiting', () => loadingIndicator.classList.remove('hidden'));
           
-          // Quando já baixou o suficiente pra tocar
+          audio.addEventListener('loadedmetadata', () => loadingIndicator.classList.add('hidden'));
           audio.addEventListener('canplay', () => loadingIndicator.classList.add('hidden'));
-          // Quando efetivamente começa a tocar
           audio.addEventListener('playing', () => loadingIndicator.classList.add('hidden'));
-          // Quando pausa
           audio.addEventListener('pause', () => loadingIndicator.classList.add('hidden'));
-          // Em caso de erro
+          
           audio.addEventListener('error', () => {
-             loadingIndicator.textContent = "Erro ao carregar o áudio.";
+             loadingIndicator.innerHTML = '<span class="text-red-600">Erro ao carregar o áudio. Tente novamente.</span>';
              loadingIndicator.classList.remove('hidden');
           });
         }
