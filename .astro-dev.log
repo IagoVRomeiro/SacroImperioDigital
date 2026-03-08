@@ -1,0 +1,14 @@
+
+> rosary-reader@0.0.1 dev
+> astro dev
+
+22:23:49 [types] Generated 1ms
+22:23:49 [content] Syncing content
+22:23:49 [content] Synced content
+
+ astro  v5.7.10 ready in 1215 ms
+
+┃ Local    http://localhost:4321/
+┃ Network  use --host to expose
+
+22:23:49 watching for file changes...
