@@ -3,20 +3,20 @@ import Layout from "../layouts/layout.astro";
 import SantoDoDiaResumo from "../components/SantoDoDiaResumo.astro";
 import LiturgiaDoDia from "../components/LiturgiaDoDia.astro";
 import { frasesDosSantos } from "../data/frases-dos-santos";
-const frasesJson = JSON.stringify(frasesDosSantos);
+
+// Renderizada a cada visita: santo, liturgia e frase mudam conforme o dia.
+export const prerender = false;
+
+const frase = frasesDosSantos[Math.floor(Math.random() * frasesDosSantos.length)];
 ---
 
 <Layout title="Sacro Império Digital">
   <div class="home">
     <section class="hero">
-      <div class="container hero-inner">
-        <div class="hero-kicker hero-kicker-dark fade-up" style="--delay: 0.1s">Sacro Império Digital</div>
-        <h1 class="hero-title fade-up" style="--delay: 0.2s" data-role="frase">
-          Oracao cotidiana, liturgia e santos do dia
-        </h1>
-        <p class="hero-subtitle fade-up" style="--delay: 0.3s" data-role="autor">
-          Um guia direto para rezar e acompanhar a Igreja.
-        </p>
+      <div class="hero-inner container">
+        <div class="kicker fade-up" style="--delay: 0.1s">Sacro Império Digital</div>
+        <h1 class="hero-title fade-up" style="--delay: 0.2s">{frase.texto}</h1>
+        <p class="hero-subtitle fade-up" style="--delay: 0.3s">{frase.autor}</p>
         <div class="hero-actions fade-up" style="--delay: 0.4s">
           <a class="btn btn-primary" href="/rosario-do-dia">Iniciar o Rosário</a>
           <a class="btn btn-outline" href="/oracoes">Explorar Orações</a>
@@ -24,34 +24,16 @@ const frasesJson = JSON.stringify(frasesDosSantos);
       </div>
     </section>
 
-    <section class="section compact-section">
-      <div class="container">
-        <div class="fade-up" style="--delay: 0.3s">
-          <SantoDoDiaResumo />
-        </div>
+    <section class="compact-section">
+      <div class="fade-up container" style="--delay: 0.3s">
+        <SantoDoDiaResumo />
       </div>
     </section>
 
-    <section class="section compact-section">
-      <div class="container">
-        <div class="fade-up" style="--delay: 0.3s">
-          <LiturgiaDoDia />
-        </div>
+    <section class="compact-section">
+      <div class="fade-up container" style="--delay: 0.3s">
+        <LiturgiaDoDia />
       </div>
     </section>
-
   </div>
-
-  <script define:vars={{ frasesJson }}>
-    const frases = JSON.parse(frasesJson);
-    const fraseEl = document.querySelector("[data-role='frase']");
-    const autorEl = document.querySelector("[data-role='autor']");
-
-    if (frases?.length && fraseEl && autorEl) {
-      const indice = Math.floor(Math.random() * frases.length);
-      const frase = frases[indice];
-      fraseEl.textContent = frase?.texto || fraseEl.textContent;
-      autorEl.textContent = frase?.autor || autorEl.textContent;
-    }
-  </script>
 </Layout>

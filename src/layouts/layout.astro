@@ -1,85 +1,109 @@
 ---
-import { Font } from "astro:assets";
 import "../styles.css";
 
 type Props = {
   title?: string;
+  description?: string;
 };
 
-const { title = "Terço de Rezas" } = Astro.props;
+const siteName = "Sacro Império Digital";
+const { title, description = "Orações, Santo Rosário, liturgia diária e santos do dia." } = Astro.props;
+const pageTitle = title && title !== siteName ? `${title} | ${siteName}` : siteName;
+
+const navLinks = [
+  { href: "/oracoes", label: "Orações" },
+  { href: "/santo-rosario", label: "Rosário" },
+  { href: "/santos-do-dia", label: "Santo do Dia" },
+  { href: "/servir", label: "Servir" },
+  { href: "/catequese", label: "Catequese" },
+];
+
+const socialLinks = [
+  {
+    href: "https://x.com/DigitalSacro",
+    label: "X (Twitter)",
+    icon: "M18.244 2H21.6l-7.38 8.438L22 22h-6.829l-5.35-7.007L3.8 22H.44l7.9-9.02L2 2h6.998l4.83 6.266L18.244 2Zm-1.2 18h1.858L7.06 4H5.073l11.97 16Z",
+  },
+  {
+    href: "https://www.instagram.com/sacroimperiodigital/",
+    label: "Instagram",
+    icon: "M7.5 3h9A4.5 4.5 0 0 1 21 7.5v9A4.5 4.5 0 0 1 16.5 21h-9A4.5 4.5 0 0 1 3 16.5v-9A4.5 4.5 0 0 1 7.5 3Zm0 1.5A3 3 0 0 0 4.5 7.5v9a3 3 0 0 0 3 3h9a3 3 0 0 0 3-3v-9a3 3 0 0 0-3-3h-9ZM12 7.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 1.5A3 3 0 1 0 15 12a3 3 0 0 0-3-3Zm4.65-2.1a1.05 1.05 0 1 1-1.05 1.05 1.05 0 0 1 1.05-1.05Z",
+  },
+];
+
+const currentPath = Astro.url.pathname;
 ---
 
 <!doctype html>
-<html lang="pt-BR" data-theme="vatican">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL("/assets/fundo.png", Astro.site)} />
     <link rel="icon" type="image/png" href="/assets/icon.png" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
-    <Font cssVariable="--font-serif" preload />
+    <title>{pageTitle}</title>
   </head>
-  <body class="antialiased site-shell">
+  <body class="site-shell antialiased">
     <header class="site-header">
-      <div class="container header-inner">
+      <div class="header-inner container">
         <a href="/" class="brand">
-          <img src="/assets/icon.png" alt="Sacro Império Digital" class="brand-mark" />
-          <div>
-            <div class="brand-title">Sacro Império Digital</div>
-            <div class="brand-subtitle"></div>
-          </div>
+          <img src="/assets/icon.png" alt="" class="brand-mark" width="44" height="44" />
+          <span class="brand-title">{siteName}</span>
         </a>
-        <nav class="site-nav" aria-label="Navegação principal">
-          <a class="nav-link" href="/oracoes">Orações</a>
-          <a class="nav-link" href="/santo-rosario">Rosário</a>
-          <a class="nav-link" href="/santos-do-dia">Santo do Dia</a>
-          <a class="nav-link" href="/servir">Servir</a>
-          <a class="nav-link" href="/catequese">Catequese</a>
-        </nav>
-        <button class="mobile-nav-toggle" aria-label="Abrir menu">
+        <button class="mobile-nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="site-nav">
           <span></span>
           <span></span>
           <span></span>
         </button>
-      </div>
-      <div class="mobile-nav">
-        <nav>
-          <a class="nav-link" href="/oracoes">Orações</a>
-          <a class="nav-link" href="/santo-rosario">Rosário</a>
-          <a class="nav-link" href="/santos-do-dia">Santo do Dia</a>
-          <a class="nav-link" href="/servir">Servir</a>
-          <a class="nav-link" href="/catequese">Catequese</a>
+        <nav id="site-nav" class="site-nav" aria-label="Navegação principal">
+          {
+            navLinks.map((link) => (
+              <a
+                class="nav-link"
+                href={link.href}
+                aria-current={currentPath.startsWith(link.href) ? "page" : undefined}
+              >
+                {link.label}
+              </a>
+            ))
+          }
         </nav>
       </div>
     </header>
     <main class="main-content">
       <slot />
     </main>
-    <footer class="mt-16 border-t border-[var(--accent-soft)] bg-[var(--paper)] shadow-[0_-8px_20px_var(--shadow-soft)]">
+    <footer>
       <div class="container py-10">
-        <div class="flex flex-wrap gap-3 text-sm font-medium justify-center">
-          <a class="inline-flex items-center gap-2 rounded-full border border-[var(--accent-soft)] px-4 py-2 transition hover:bg-[color:var(--accent-soft)]/60 hover:text-[color:var(--accent-deep)]" href="https://x.com/DigitalSacro">
-            <svg aria-hidden="true" viewBox="0 0 24 24" class="size-4">
-              <path fill="currentColor" d="M18.244 2H21.6l-7.38 8.438L22 22h-6.829l-5.35-7.007L3.8 22H.44l7.9-9.02L2 2h6.998l4.83 6.266L18.244 2Zm-1.2 18h1.858L7.06 4H5.073l11.97 16Z"/>
-            </svg>
-            X (Twitter)
-          </a>
-          <a class="inline-flex items-center gap-2 rounded-full border border-[var(--accent-soft)] px-4 py-2 transition hover:bg-[color:var(--accent-soft)]/60 hover:text-[color:var(--accent-deep)]" href="https://www.instagram.com/sacroimperiodigital/">
-            <svg aria-hidden="true" viewBox="0 0 24 24" class="size-4">
-              <path fill="currentColor" d="M7.5 3h9A4.5 4.5 0 0 1 21 7.5v9A4.5 4.5 0 0 1 16.5 21h-9A4.5 4.5 0 0 1 3 16.5v-9A4.5 4.5 0 0 1 7.5 3Zm0 1.5A3 3 0 0 0 4.5 7.5v9a3 3 0 0 0 3 3h9a3 3 0 0 0 3-3v-9a3 3 0 0 0-3-3h-9ZM12 7.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5Zm0 1.5A3 3 0 1 0 15 12a3 3 0 0 0-3-3Zm4.65-2.1a1.05 1.05 0 1 1-1.05 1.05 1.05 0 0 1 1.05-1.05Z"/>
-            </svg>
-            Instagram
-          </a>
+        <div class="flex flex-wrap justify-center gap-3 text-sm font-medium">
+          {
+            socialLinks.map((link) => (
+              <a class="social-link" href={link.href} target="_blank" rel="noopener">
+                <svg aria-hidden="true" viewBox="0 0 24 24" class="size-4">
+                  <path fill="currentColor" d={link.icon} />
+                </svg>
+                {link.label}
+              </a>
+            ))
+          }
         </div>
       </div>
     </footer>
     <script>
-      const toggleButton = document.querySelector('.mobile-nav-toggle');
-      const body = document.body;
+      const toggleButton = document.querySelector(".mobile-nav-toggle");
+      const setOpen = (open: boolean) => {
+        document.body.classList.toggle("is-mobile-nav-open", open);
+        toggleButton?.setAttribute("aria-expanded", String(open));
+        toggleButton?.setAttribute("aria-label", open ? "Fechar menu" : "Abrir menu");
+      };
 
-      toggleButton.addEventListener('click', () => {
-        body.classList.toggle('is-mobile-nav-open');
-      });
+      toggleButton?.addEventListener("click", () => setOpen(!document.body.classList.contains("is-mobile-nav-open")));
+      document.querySelectorAll(".site-nav .nav-link").forEach((link) => link.addEventListener("click", () => setOpen(false)));
+      document.addEventListener("keydown", (event) => event.key === "Escape" && setOpen(false));
     </script>
   </body>
 </html>

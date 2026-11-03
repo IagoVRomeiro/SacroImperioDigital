@@ -2,27 +2,21 @@
 import Layout from "./layout.astro";
 
 type Props = {
-  frontmatter: {
-    title: string;
-    subtitle?: string;
-    image?: string;
-  };
+  title: string;
+  subtitle: string;
+  image: string;
+  description?: string;
 };
 
-const { frontmatter } = Astro.props;
-const imageUrl = frontmatter?.image ?? "/assets/fundo.png";
-const subtitle = frontmatter?.subtitle ?? "Biografia do santo";
+const { title, subtitle, image, description } = Astro.props;
 ---
 
-<Layout title={frontmatter.title}>
+<Layout title={title} description={description}>
   <div class="container">
     <a href="/santos-do-dia" class="back-to-saints-link">← Voltar para Santos</a>
-    <div
-      class="saint-hero"
-      style={`--saint-image: url('${imageUrl}')`}
-    >
+    <div class="saint-hero" style={`--saint-image: url('${encodeURI(image)}')`}>
       <div class="saint-hero-inner">
-        <h1 class="saint-hero-title">{frontmatter.title}</h1>
+        <h1 class="saint-hero-title">{title}</h1>
         <div class="saint-hero-rule" aria-hidden="true"></div>
         <p class="saint-hero-subtitle">{subtitle}</p>
       </div>
@@ -34,18 +28,17 @@ const subtitle = frontmatter?.subtitle ?? "Biografia do santo";
   </div>
 </Layout>
 
-<style is:global>
+<style>
   .back-to-saints-link {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
     margin-bottom: 2rem;
     color: var(--accent);
-    text-decoration: none;
     font-weight: bold;
     transition: color 0.2s ease;
   }
   .back-to-saints-link:hover {
-    color: var(--accent-light);
+    color: var(--ink);
   }
 </style>

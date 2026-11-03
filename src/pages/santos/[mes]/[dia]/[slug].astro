@@ -1,0 +1,28 @@
+---
+import type { GetStaticPaths } from "astro";
+import { meses, santos } from "../../../../data/santos";
+import SantoLayout from "../../../../layouts/santo-layout.astro";
+import { toSlug } from "../../../../utils/santos";
+
+export const getStaticPaths = (() =>
+  meses.flatMap((mes) =>
+    santos[mes.slug].map((santo) => ({
+      params: { mes: mes.slug, dia: String(santo.day), slug: toSlug(santo.title) },
+      props: { santo, nomeMes: mes.nome },
+    }))
+  )) satisfies GetStaticPaths;
+
+const { santo, nomeMes } = Astro.props;
+---
+
+<SantoLayout
+  title={santo.title}
+  subtitle={`Santo do dia ${santo.day} de ${nomeMes}`}
+  image={santo.image}
+  description={santo.description.slice(0, 160)}
+>
+  <p>{santo.description}</p>
+  <p class="text-sm opacity-70">
+    Fonte: <a href={santo.source} target="_blank" rel="noopener">Canção Nova</a>
+  </p>
+</SantoLayout>

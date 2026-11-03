@@ -1,31 +1,16 @@
 ---
-import { mesesOrdenados, santosDoDia2025, santosDoDia2026 } from "../data/santos-do-dia";
-import { getBrasiliaDateParts } from "../utils/brasilia-date";
+import { getSantoDeHoje, getSantoHref } from "../utils/santos";
 
-const { year: currentYear, day: dayOfMonth, monthIndex } = getBrasiliaDateParts();
-const is2026 = currentYear === 2026;
-const santosDoDia = is2026 ? santosDoDia2026 : santosDoDia2025;
-const monthKey = mesesOrdenados[monthIndex] ?? mesesOrdenados[0];
-const list = santosDoDia[monthKey] ?? [];
-const today = list.find((item) => item.day === dayOfMonth);
-const fallbackImage = "/assets/fundo.png";
-const isExternal = (value?: string) => Boolean(value && /^https?:/i.test(value));
-const image = today?.image && !isExternal(today.image) ? encodeURI(today.image) : fallbackImage;
-const toSlug = (text: string) =>
-  text
-    .toLowerCase()
-    .replace(/[^a-z0-9 -]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-");
-const href = today ? `/santos/${monthKey}/${today.day}/${toSlug(today.title)}` : "#";
+const { day, mes, santo } = getSantoDeHoje();
+const image = santo ? encodeURI(santo.image) : "/assets/fundo.png";
 ---
 
-<a href={href} class="santo-resumo motion-rise" style="--delay: 0.1s">
+<a href={santo ? getSantoHref(mes.slug, santo) : "/santos-do-dia"} class="santo-resumo">
   <div class="santo-media" style={`background-image: url('${image}')`}></div>
   <div class="santo-body">
-    <div class="santo-kicker">Santo do Dia</div>
-    <h3>{today ? today.title : "Sem dados para este dia"}</h3>
-    <p>Dia {dayOfMonth} de {monthKey}</p>
+    <div class="kicker">Santo do Dia</div>
+    <h3>{santo ? santo.title : "Sem dados para este dia"}</h3>
+    <p>Dia {day} de {mes.nome}</p>
   </div>
 </a>
 
@@ -37,10 +22,8 @@ const href = today ? `/santos/${monthKey}/${today.day}/${toSlug(today.title)}` :
     border-radius: 20px;
     overflow: hidden;
     border: 1px solid rgba(210, 182, 117, 0.35);
-    background: rgba(8, 11, 18, 0.85);
+    background: var(--card);
     box-shadow: 0 24px 40px rgba(0, 0, 0, 0.45);
-    color: inherit;
-    text-decoration: none;
   }
   .santo-resumo:hover {
     border-color: rgba(210, 182, 117, 0.65);
@@ -53,22 +36,14 @@ const href = today ? `/santos/${monthKey}/${today.day}/${toSlug(today.title)}` :
   .santo-body {
     padding: 1.6rem;
   }
-  .santo-kicker {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.3em;
-    color: rgba(237, 240, 247, 0.6);
-    margin-bottom: 0.7rem;
-  }
   .santo-body h3 {
-    font-family: "Cormorant Garamond", serif;
+    font-family: var(--font-display);
     font-size: clamp(1.6rem, 3vw, 2.3rem);
     margin: 0 0 0.6rem;
   }
   .santo-body p {
     margin: 0;
-    color: rgba(237, 240, 247, 0.7);
-    text-transform: capitalize;
+    color: var(--muted);
   }
   @media (min-width: 900px) {
     .santo-resumo {

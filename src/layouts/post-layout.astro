@@ -1,29 +1,30 @@
 ---
-import { LuArrowLeft } from "react-icons/lu";
+import ArrowLeft from "@lucide/astro/icons/arrow-left";
 import Layout from "./layout.astro";
 
 type Props = {
   frontmatter: {
     title: string;
+    description?: string;
     wide?: boolean;
     backHref?: string;
   };
 };
 
 const { frontmatter } = Astro.props;
-const isWide = Boolean(frontmatter?.wide);
-const backHref = frontmatter?.backHref ?? "/oracoes";
+const backHref = frontmatter.backHref ?? "/oracoes";
 ---
 
-<Layout title={frontmatter.title}>
+<Layout title={frontmatter.title} description={frontmatter.description}>
   <div class="container">
     <div class="py-4">
       <a href={backHref} class="inline-flex items-center gap-2 text-sm hover:underline">
-        <LuArrowLeft className="size-4" />
+        <ArrowLeft class="size-4" />
         Voltar
       </a>
     </div>
-    <div class={`prose mx-auto my-12 w-full ${isWide ? "max-w-[1200px]" : "max-w-[80ch]"} font-serif`}>
+    <div class:list={["prose mx-auto my-12 w-full font-serif", frontmatter.wide ? "max-w-[1200px]" : "max-w-[80ch]"]}>
+      <h1>{frontmatter.title}</h1>
       <slot />
     </div>
   </div>

@@ -1,196 +1,70 @@
 ---
-import { mesesOrdenados, santosDoDia2025, santosDoDia2026 } from "../data/santos-do-dia";
-import { getBrasiliaDateParts } from "../utils/brasilia-date";
+import { meses, santos } from "../data/santos";
+import { getSantoDeHoje, getSantoHref } from "../utils/santos";
 
-const { year: currentYear, day: dayOfMonth, monthIndex } = getBrasiliaDateParts();
-const toTitle = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
-const monthFromDate = mesesOrdenados[monthIndex] ?? mesesOrdenados[0];
-const santosDoDia = currentYear === 2026 ? santosDoDia2026 : santosDoDia2025;
-const mesesDisponiveis = mesesOrdenados.filter(
-  (mes) => (santosDoDia[mes] ?? []).length > 0
-);
-const mesesParaSelect = mesesDisponiveis.length ? mesesDisponiveis : mesesOrdenados;
-const initialMonth = monthFromDate;
-const initialList = santosDoDia[initialMonth] ?? [];
-const initialToday = (santosDoDia[monthFromDate] ?? []).find((item) => item.day === dayOfMonth);
-const initialTitle = initialToday ? initialToday.title : "Sem dados para este dia";
-const initialDate = `Dia ${dayOfMonth} de ${toTitle(monthFromDate)}`;
-const fallbackImage = "/assets/fundo.png";
-const isExternal = (value?: string) => Boolean(value && /^https?:/i.test(value));
-const toSafeImage = (value?: string) =>
-  value && !isExternal(value) ? encodeURI(value) : fallbackImage;
-
-const santosJson = JSON.stringify(santosDoDia);
-const mesesJson = JSON.stringify(mesesOrdenados);
-const mesesSelectJson = JSON.stringify(mesesParaSelect);
-const toSlug = (text: string) =>
-  text
-    .toLowerCase()
-    .replace(/[^a-z0-9 -]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-");
+const { day, mes: mesAtual, santo: santoDeHoje } = getSantoDeHoje();
 ---
 
 <section class="santos-do-dia" aria-live="polite">
+  <div class="santo-highlight">
+    <div class="kicker">Santo do dia</div>
+    <h3 class="santo-title">{santoDeHoje ? santoDeHoje.title : "Sem dados para este dia"}</h3>
+    <p class="santo-date">Dia {day} de {mesAtual.nome}</p>
+  </div>
+
   <div class="month-nav">
-    <span class="month-label">Mês</span>
+    <span class="kicker">Mês</span>
     <div class="month-controls">
-      <button class="month-btn" type="button" data-action="prev" aria-label="Mês anterior">
-        ←
-      </button>
+      <button class="month-btn" type="button" data-step="-1" aria-label="Mês anterior">←</button>
       <select class="month-select" aria-label="Escolher mês">
-        {mesesParaSelect.map((mes) => (
-          <option value={mes} selected={mes === initialMonth}>
-            {toTitle(mes)}
-          </option>
-        ))}
+        {meses.map((mes) => <option value={mes.slug} selected={mes.slug === mesAtual.slug}>{mes.nome}</option>)}
       </select>
-      <button class="month-btn" type="button" data-action="next" aria-label="Próximo mês">
-        →
-      </button>
+      <button class="month-btn" type="button" data-step="1" aria-label="Próximo mês">→</button>
     </div>
   </div>
 
-  <div class="santo-highlight motion-rise" style="--delay: 0.1s">
-    <div class="santo-kicker">Santo do dia</div>
-    <h3 class="santo-title" data-role="title">
-      {initialTitle}
-    </h3>
-    <p class="santo-date" data-role="date">{initialDate}</p>
-  </div>
-
-  <div class="santos-grid" data-month={initialMonth}>
-    {initialList.length ? (
-      initialList.map((item, index) => (
-        <a href={`/santos/${initialMonth}/${item.day}/${toSlug(item.title)}`} class="saint-card-link">
-          <article
-            class={`saint-card motion-rise ${item.day === dayOfMonth ? "is-today" : ""}`}
-            style={`--delay: ${0.1 + index * 0.04}s`}
-          >
-            <div class="card-media" style={`background-image: url('${toSafeImage(item.image)}')`}></div>
-            <div class="card-footer">
-              <div class="card-day">Dia {item.day}</div>
-              <h3>{item.title}</h3>
-              <p>{toTitle(initialMonth)}</p>
-            </div>
-          </article>
-        </a>
-      ))
-    ) : (
-      <article class="saint-card motion-rise is-empty" style="--delay: 0.1s">
-        <div class="card-media" style={`background-image: url('${fallbackImage}')`}></div>
-        <div class="card-footer">
-          <div class="card-day">Sem dados</div>
-          <h3>Em breve</h3>
-          <p>{toTitle(initialMonth)}</p>
-        </div>
-      </article>
-    )}
-  </div>
-</section>
-
-<script define:vars={{ santosJson, mesesJson, mesesSelectJson, dayOfMonth, fallbackImage, monthFromDate }}>
-  const santosDoDia = JSON.parse(santosJson);
-  const mesesOrdenados = JSON.parse(mesesJson);
-  const mesesParaSelect = JSON.parse(mesesSelectJson);
-  const container = document.currentScript?.previousElementSibling;
-  const select = container?.querySelector(".month-select");
-  const grid = container?.querySelector(".santos-grid");
-  const buttons = container?.querySelectorAll(".month-btn");
-  const summaryTitle = container?.querySelector("[data-role='title']");
-  const summaryDate = container?.querySelector("[data-role='date']");
-
-  const toTitle = (text) => text.charAt(0).toUpperCase() + text.slice(1);
-  const toSafeImage = (value) => (value && !/^https?:/i.test(value) ? encodeURI(value) : fallbackImage);
-  const toSlug = (text) =>
-    text
-      .toLowerCase()
-      .replace(/[^a-z0-9 -]/g, "")
-      .replace(/\s+/g, "-")
-      .replace(/-+/g, "-");
-
-  const renderCards = (mes) => {
-    if (!grid) return;
-    const lista = santosDoDia[mes] || [];
-    const isTodayMonth = mes === monthFromDate;
-
-    if (!lista.length) {
-      grid.innerHTML = `
-        <article class="saint-card motion-rise is-empty" style="--delay: 0.1s">
-          <div class="card-media" style="background-image: url('${fallbackImage}')"></div>
-          <div class="card-footer">
-            <div class="card-day">Sem dados</div>
-            <h3>Em breve</h3>
-            <p>${toTitle(mes)}</p>
-          </div>
-        </article>
-      `;
-      return;
-    }
-
-    grid.innerHTML = lista
-      .map(
-        (item, index) => `
-          <a href="/santos/${mes}/${item.day}/${toSlug(item.title)}" class="saint-card-link">
-            <article class="saint-card motion-rise ${item.day === dayOfMonth && isTodayMonth ? "is-today" : ""}" style="--delay: ${
-          0.1 + index * 0.04
-        }s">
-              <div class="card-media" style="background-image: url('${toSafeImage(item.image)}')"></div>
+  {
+    meses.map((mes) => (
+      <div class="santos-grid" data-month={mes.slug} hidden={mes.slug !== mesAtual.slug}>
+        {santos[mes.slug].map((santo) => (
+          <a href={getSantoHref(mes.slug, santo)} class="saint-card-link">
+            <article class:list={["saint-card", { "is-today": mes.slug === mesAtual.slug && santo.day === day }]}>
+              <div class="card-media" style={`background-image: url('${encodeURI(santo.image)}')`} />
               <div class="card-footer">
-                <div class="card-day">Dia ${item.day}</div>
-                <h3>${item.title}</h3>
-                <p>${toTitle(mes)}</p>
+                <div class="card-day">Dia {santo.day}</div>
+                <h3>{santo.title}</h3>
+                <p>{mes.nome}</p>
               </div>
             </article>
           </a>
-        `
-      )
-      .join("");
-  };
-
-  const updateSummary = () => {
-    if (!summaryTitle || !summaryDate) return;
-    const lista = santosDoDia[monthFromDate] || [];
-    const item = lista.find((entry) => entry.day === dayOfMonth);
-    summaryTitle.textContent = item ? item.title : "Sem dados para este dia";
-    summaryDate.textContent = `Dia ${dayOfMonth} de ${toTitle(monthFromDate)}`;
-  };
-
-  const setMonth = (mes) => {
-    if (!select) return;
-    select.value = mes;
-    renderCards(mes);
-  };
-
-  const initialMonth = grid?.getAttribute("data-month");
-  if (initialMonth) {
-    setMonth(initialMonth);
-  } else {
-    setMonth(mesesParaSelect[0] || monthFromDate || mesesOrdenados[0]);
+        ))}
+      </div>
+    ))
   }
-  updateSummary();
+</section>
 
-  select?.addEventListener("change", (event) => {
-    const target = event.target;
-    if (target?.value) {
-      renderCards(target.value);
-    }
-  });
+<script>
+  const root = document.querySelector<HTMLElement>(".santos-do-dia");
+  const select = root?.querySelector<HTMLSelectElement>(".month-select");
+  const grids = root?.querySelectorAll<HTMLElement>(".santos-grid") ?? [];
 
-  buttons?.forEach((button) => {
+  const showMonth = (slug: string) => {
+    if (select) select.value = slug;
+    grids.forEach((grid) => (grid.hidden = grid.dataset.month !== slug));
+  };
+
+  select?.addEventListener("change", () => showMonth(select.value));
+  root?.querySelectorAll<HTMLButtonElement>(".month-btn").forEach((button) => {
     button.addEventListener("click", () => {
       if (!select) return;
-      const currentIndex = mesesParaSelect.indexOf(select.value);
-      const direction = button.getAttribute("data-action") === "next" ? 1 : -1;
-      const total = mesesParaSelect.length || mesesOrdenados.length;
-      const list = mesesParaSelect.length ? mesesParaSelect : mesesOrdenados;
-      const nextIndex = (currentIndex + direction + total) % total;
-      setMonth(list[nextIndex]);
+      const total = select.options.length;
+      const next = (select.selectedIndex + Number(button.dataset.step) + total) % total;
+      showMonth(select.options[next].value);
     });
   });
 </script>
 
-<style is:global>
+<style>
   .santos-do-dia {
     margin-top: 2rem;
     display: grid;
@@ -198,47 +72,14 @@ const toSlug = (text: string) =>
   }
   .month-nav {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    width: 100%;
     flex-direction: column;
-  }
-  .santo-highlight {
-    border: 1px solid var(--accent-soft);
-    border-radius: 16px;
-    padding: 1.5rem;
-    background: rgba(11, 14, 21, 0.6);
-    text-align: center;
-    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.35);
-  }
-  .santo-kicker {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.3em;
-    color: rgba(237, 240, 247, 0.6);
-    margin-bottom: 0.75rem;
-  }
-  .santo-title {
-    font-family: "Cormorant Garamond", serif;
-    font-size: 1.9rem;
-    margin: 0 0 0.5rem;
-  }
-  .santo-date {
-    margin: 0;
-    color: rgba(237, 240, 247, 0.7);
-    text-transform: capitalize;
+    align-items: center;
+    gap: 1rem;
   }
   .month-controls {
     display: flex;
     align-items: center;
     gap: 1rem;
-  }
-  .month-label {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.3em;
-    color: rgba(237, 240, 247, 0.6);
   }
   .month-select {
     background: rgba(11, 14, 21, 0.7);
@@ -246,7 +87,6 @@ const toSlug = (text: string) =>
     color: var(--ink);
     padding: 0.5rem 1.25rem;
     border-radius: 999px;
-    text-transform: capitalize;
     letter-spacing: 0.1em;
   }
   .month-btn {
@@ -257,26 +97,50 @@ const toSlug = (text: string) =>
     background: rgba(11, 14, 21, 0.6);
     color: var(--ink);
     font-size: 1.1rem;
-    transition: transform 0.2s ease, border-color 0.2s ease;
+    cursor: pointer;
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease;
   }
   .month-btn:hover {
     transform: translateY(-1px);
     border-color: rgba(210, 182, 117, 0.4);
+  }
+  .santo-highlight {
+    border: 1px solid var(--accent-soft);
+    border-radius: 16px;
+    padding: 1.5rem;
+    background: rgba(11, 14, 21, 0.6);
+    text-align: center;
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.35);
+  }
+  .santo-title {
+    font-family: var(--font-display);
+    font-size: 1.9rem;
+    margin: 0 0 0.5rem;
+  }
+  .santo-date {
+    margin: 0;
+    color: var(--muted);
   }
   .santos-grid {
     display: grid;
     gap: 2rem;
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
+  .santos-grid[hidden] {
+    display: none;
+  }
   .saint-card {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    height: 100%;
     border-radius: 18px;
     overflow: hidden;
-    background: rgba(7, 10, 16, 0.85);
+    background: var(--card);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
-    border: 1px solid rgba(210, 182, 117, 0.55);
+    border: 1px solid rgba(210, 182, 117, 0.3);
   }
   .saint-card.is-today {
     border-color: rgba(210, 182, 117, 0.9);
@@ -295,6 +159,7 @@ const toSlug = (text: string) =>
     background: linear-gradient(180deg, rgba(4, 6, 10, 0) 20%, rgba(4, 6, 10, 0.85) 100%);
   }
   .card-footer {
+    flex: 1;
     padding: 1.4rem 1.6rem 1.5rem;
     background: #0a1220;
   }
@@ -302,17 +167,16 @@ const toSlug = (text: string) =>
     font-size: 0.75rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: rgba(237, 240, 247, 0.6);
+    color: var(--muted);
   }
   .card-footer h3 {
-    font-family: "Cormorant Garamond", serif;
-    font-size: 1.6rem;
-    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    margin: 0.25rem 0;
   }
   .card-footer p {
     margin: 0;
-    color: rgba(237, 240, 247, 0.7);
-    text-transform: capitalize;
+    color: var(--muted);
     font-size: 0.9rem;
   }
   @media (max-width: 1100px) {
@@ -322,7 +186,7 @@ const toSlug = (text: string) =>
   }
   @media (max-width: 720px) {
     .santos-grid {
-      grid-template-columns: repeat(1, minmax(0, 1fr));
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>

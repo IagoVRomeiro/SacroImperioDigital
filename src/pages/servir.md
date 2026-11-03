@@ -19,7 +19,7 @@ backHref: "/"
   }
   .servir-card h3 {
     margin: 0 0 0.6rem;
-    font-family: "Cormorant Garamond", serif;
+    font-family: var(--font-display);
   }
   .servir-inline {
     display: flex;

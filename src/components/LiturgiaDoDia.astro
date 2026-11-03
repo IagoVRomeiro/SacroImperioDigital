@@ -1,107 +1,48 @@
 ---
-import { liturgia } from "../data/liturgia";
+import { liturgia, type LiturgiaTexto } from "../data/liturgia";
 import { getBrasiliaDateParts } from "../utils/brasilia-date";
 
-const { year, month, day } = getBrasiliaDateParts();
-const monthPad = String(month).padStart(2, "0");
-const dayPad = String(day).padStart(2, "0");
-const dateKey = `${year}-${monthPad}-${dayPad}`;
-const entry = liturgia[dateKey]
+const entry = liturgia[getBrasiliaDateParts().isoDate];
 
-const primeiraLeitura = entry?.primeiraLeitura;
-const salmo = entry?.salmo;
-const segundaLeitura = entry?.segundaLeitura;
-const evangelho = entry?.evangelho;
-const hasEntry = Boolean(entry);
+const leituras: { titulo: string; leitura?: LiturgiaTexto }[] = entry
+  ? [
+      { titulo: "Evangelho", leitura: entry.evangelho },
+      { titulo: "Primeira Leitura", leitura: entry.primeiraLeitura },
+      { titulo: "Salmo Responsorial", leitura: entry.salmo },
+      { titulo: "Segunda Leitura", leitura: entry.segundaLeitura },
+    ].filter((item) => item.leitura?.texto)
+  : [];
 
-
-const processLiturgiaText = (value?: string): string => {
-  if (!value) return "";
-
-  // Replace common HTML entities and line breaks
-  let text = value
-    .replace(/&amp;/g, "&")
-    .replace(/&oacute;/g, "ó")
-    .replace(/&atilde;/g, "ã")
-    .replace(/&ccedil;/g, "ç")
-    .replace(/&eacute;/g, "é")
-    .replace(/&iacute;/g, "í")
-    .replace(/&uacute;/g, "ú")
-    .replace(/&aacute;/g, "á")
-    .replace(/&ecirc;/g, "ê")
-    .replace(/&otilde;/g, "õ")
-    .replace(/&uuml;/g, "ü")
-    .replace(/&ordf;/g, "ª")
-    .replace(/&ordm;/g, "º")
-    .replace(/&quot;/g, '"')
-    .replace(/&apos;/g, "'")
-    .replace(/&ndash;/g, "–")
-    .replace(/<br\s*\/?>/gi, "\n") // Replace <br> with newlines
-    .replace(/<\/?div[^>]*>/gi, "") // Remove <div> tags
-    .replace(/<[^>]+>/g, "")       // Remove any remaining HTML tags
-    .replace(/\s+/g, " ")          // Normalize whitespace
-    .trim();
-
-  // Try to extract "Missa da manhã" or "Missa do dia"
-  const missaManhaMatch = text.match(/Missa da manhã(.*?)Missa/is);
-  if (missaManhaMatch && missaManhaMatch[1]) {
-    return missaManhaMatch[1].trim();
-  }
-
-  const missaDiaMatch = text.match(/Missa do dia(.*?)Missa/is);
-  if (missaDiaMatch && missaDiaMatch[1]) {
-    return missaDiaMatch[1].trim();
-  }
-
-  // If "Missa da manhã" or "Missa do dia" not found, try to cut off at "Missa da Vigília" or similar
-  const cutoffMatch = text.match(/Missa da Vigília|Missa da Noite|Missa da noite/i);
-  if (cutoffMatch) {
-    return text.substring(0, cutoffMatch.index).trim();
-  }
-
-  return text;
-};
+// Cada linha vira um parágrafo; "Missa da Vigília", "Missa do dia" etc. viram subtítulos
+// (dias de festa trazem as leituras de mais de uma missa no mesmo texto).
+const toBlocks = (texto: string) =>
+  texto
+    .split("\n")
+    .map((linha) => linha.replace(/\s*\*\s*$/, "").trim())
+    .filter(Boolean)
+    .map((linha) => ({ linha, isMissa: /^Missa (da|do) /i.test(linha) }));
 ---
 
 <section class="daily-section">
   <div class="daily-card">
     <div class="daily-content">
-      <div class="daily-kicker">Liturgia do Dia</div>
-      {hasEntry ? (
-        <>
-          <h3>{evangelho?.referencia ? `Evangelho (${evangelho.referencia})` : "Evangelho"}</h3>
-          <p class="daily-text">
-            {evangelho?.texto
-              ? processLiturgiaText(evangelho.texto)
-              : "Sem evangelho local para este dia."}
-          </p>
-
-          <h3>
-            {primeiraLeitura?.referencia
-              ? `Primeira Leitura (${primeiraLeitura.referencia})`
-              : "Primeira Leitura"}
-          </h3>
-          <p class="daily-text">
-            {primeiraLeitura?.texto
-              ? processLiturgiaText(primeiraLeitura.texto)
-              : "Sem primeira leitura local para este dia."}
-          </p>
-
-          {segundaLeitura?.texto && (
-            <>
-              <h3>Segunda Leitura ({segundaLeitura.referencia})</h3>
-              <p class="daily-text" set:html={processLiturgiaText(segundaLeitura.texto)} />
-            </>
-          )}
-
-          <h3>{salmo?.referencia ? `Salmo do Dia (${salmo.referencia})` : "Salmo do Dia"}</h3>
-          <p class="daily-text">
-            {salmo?.texto ? processLiturgiaText(salmo.texto) : "Sem salmo local para este dia."}
-          </p>
-        </>
-      ) : (
-        <p class="daily-text">Sem liturgia local para este dia. O banco atual cobre 2026.</p>
-      )}
+      <div class="kicker">Liturgia do Dia</div>
+      {
+        leituras.length ? (
+          leituras.map(({ titulo, leitura }) => (
+            <article class="daily-reading">
+              <h3>{titulo}</h3>
+              <p class="daily-ref">{leitura!.referencia}</p>
+              {leitura!.refrao && <p class="daily-refrao">R. {leitura!.refrao}</p>}
+              {toBlocks(leitura!.texto).map(({ linha, isMissa }) =>
+                isMissa ? <h4>{linha}</h4> : <p class="daily-text">{linha}</p>
+              )}
+            </article>
+          ))
+        ) : (
+          <p class="daily-text">Liturgia de hoje ainda não cadastrada.</p>
+        )
+      }
     </div>
   </div>
 </section>

@@ -15,19 +15,19 @@ As novenas ajudam a perseverar na oração e a pedir graças com confiança.
 
 ## Como rezar uma novena
 
-- Reze durante nove dias seguidos, no mesmo horario se possivel.
-- Escolha uma intencao principal.
-- Persevere, mesmo com dias mais dificeis.
+- Reze durante nove dias seguidos, no mesmo horário, se possível.
+- Escolha uma intenção principal.
+- Persevere, mesmo com dias mais difíceis.
 
-## Roteiro diario simples
+## Roteiro diário simples
 
-1. Sinal da Cruz e ato de contricao.
+1. Sinal da Cruz e ato de contrição.
 2. Leitura breve (Evangelho ou salmo).
-3. Intencao do dia.
+3. Intenção do dia.
 4. Oração principal da novena.
-5. Pai Nosso, Ave Maria e Gloria.
+5. Pai Nosso, Ave Maria e Glória.
 
 ## Dicas
 
-- Escreva a intencao e acompanhe os frutos.
-- Reze em familia quando puder.
+- Escreva a intenção e acompanhe os frutos.
+- Reze em família quando puder.

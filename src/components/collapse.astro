@@ -1,5 +1,5 @@
 ---
-import { LuChevronDown } from "react-icons/lu";
+import ChevronDown from "@lucide/astro/icons/chevron-down";
 
 type Props = {
   title: string;
@@ -8,12 +8,12 @@ type Props = {
 const { title } = Astro.props;
 ---
 
-<div x-data="{ isOpen: false }" x-bind:data-open="isOpen" class="group not-prose contents">
-  <button x-on:click="isOpen = !isOpen" class="flex items-center gap-2 text-sm/loose font-semibold">
+<details class="collapse-prayer not-prose group">
+  <summary class="flex cursor-pointer list-none items-center gap-2 text-sm/loose font-semibold">
     {title}
-    <LuChevronDown className="size-4 opacity-50 group-data-[open=true]:rotate-180" strokeWidth={3} />
-  </button>
-  <div x-show="isOpen" class="prose prose-sm mt-1 mb-6 max-w-none" x-cloak>
+    <ChevronDown class="size-4 opacity-50 transition group-open:rotate-180" stroke-width={3} />
+  </summary>
+  <div class="prose prose-sm mt-1 mb-6 max-w-none">
     <slot />
   </div>
-</div>
+</details>

@@ -1,6 +1,7 @@
 ---
-layout: "../layouts/index-layout.astro"
+layout: "../layouts/post-layout.astro"
 title: "Orações"
+backHref: "/"
 ---
 
 ## 1. Orações Básicas e Diárias
@@ -46,7 +47,7 @@ Focadas na adoração e na relação direta com Deus.
 - [Alma de Cristo (Anima Christi)](/alma-de-cristo)
 - [Terço da Misericórdia (Revelado a Santa Faustina)](/terco-da-misericordia)
 - [Ladainha do Sagrado Coração de Jesus](/ladainha-do-sagrado-coracao-de-jesus)
-- [Ladainha do Preciosíssimo Sangue](/ladainha-do-preciosismo-sangue)
+- [Ladainha do Preciosíssimo Sangue](/ladainha-do-preciosissimo-sangue)
 - [Ladainha do Santíssimo Nome de Jesus](/ladainha-do-santissimo-nome-de-jesus)
 - [Via Sacra (As 14 estações da Paixão)](/via-sacra)
 - [Adoro te Devote (Hino Eucarístico de Santo Tomás de Aquino)](/adoro-te-devote)
@@ -92,8 +93,4 @@ Muitas das orações acima têm sua versão "mãe" em latim, que a Igreja recome
 ## 8. Novenas
 Séries de orações por 9 dias.
 
-- [Novena de Natal](/novenas)
-- [Novena do Espírito Santo (Pentecostes)](/novenas)
-- [Novena da Medalha Milagrosa](/novenas)
-- [Novena das Rosas (Santa Teresinha)](/novenas)
-- [Novena a Nossa Senhora do Perpétuo Socorro](/novenas)
+- [Como rezar uma novena](/novenas)

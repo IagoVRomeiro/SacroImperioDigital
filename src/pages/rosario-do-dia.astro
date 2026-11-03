@@ -1,74 +1,18 @@
 ---
-import Layout from "../layouts/post-layout.astro";
+import { getBrasiliaDateParts } from "../utils/brasilia-date";
 
-const title = "Rosário do Dia";
-const backHref = "/";
+// Redireciona no servidor para os mistérios do dia da semana (horário de Brasília).
+export const prerender = false;
+
+const misterioPorDia = [
+  "/misterios-gloriosos-extendida", // domingo
+  "/misterios-gozosos-extendida", // segunda
+  "/misterios-dolorosos-extendida", // terça
+  "/misterios-gloriosos-extendida", // quarta
+  "/misterios-luminosos-extendida", // quinta
+  "/misterios-dolorosos-extendida", // sexta
+  "/misterios-gozosos-extendida", // sábado
+];
+
+return Astro.redirect(misterioPorDia[getBrasiliaDateParts().weekday] ?? "/santo-rosario", 302);
 ---
-
-<Layout frontmatter={{ title, backHref }}>
-  <h1>Rosário do Dia</h1>
-  <p>Redirecionando para os mistérios de hoje.</p>
-  <p id="rosario-info">Carregando o mistério do dia.</p>
-  <p>
-    Se não redirecionar automaticamente, escolha abaixo:
-  </p>
-  <ul>
-    <li><a href="/misterios-gozosos-extendida">Mistérios Gozosos (segunda e sábado)</a></li>
-    <li><a href="/misterios-dolorosos-extendida">Mistérios Dolorosos (terça e sexta)</a></li>
-    <li><a href="/misterios-gloriosos-extendida">Mistérios Gloriosos (quarta e domingo)</a></li>
-    <li><a href="/misterios-luminosos-extendida">Mistérios Luminosos (quinta)</a></li>
-  </ul>
-
-  <noscript>
-    <p>Ative o JavaScript para redirecionamento automático.</p>
-  </noscript>
-
-  <script>
-    const now = new Date();
-    const brasiliaNow = new Date(
-      now.toLocaleString("en-US", { timeZone: "America/Sao_Paulo" })
-    );
-    const day = brasiliaNow.getDay();
-    const routes = {
-      0: {
-        label: "Domingo - Mistérios Gloriosos",
-        href: "/misterios-gloriosos-extendida",
-      },
-      1: {
-        label: "Segunda - Mistérios Gozosos",
-        href: "/misterios-gozosos-extendida",
-      },
-      2: {
-        label: "Terça - Mistérios Dolorosos",
-        href: "/misterios-dolorosos-extendida",
-      },
-      3: {
-        label: "Quarta - Mistérios Gloriosos",
-        href: "/misterios-gloriosos-extendida",
-      },
-      4: {
-        label: "Quinta - Mistérios Luminosos",
-        href: "/misterios-luminosos-extendida",
-      },
-      5: {
-        label: "Sexta - Mistérios Dolorosos",
-        href: "/misterios-dolorosos-extendida",
-      },
-      6: {
-        label: "Sábado - Mistérios Gozosos",
-        href: "/misterios-gozosos-extendida",
-      },
-    };
-    const selected = routes[day];
-    const target = selected?.href || "/santo-rosario";
-    const info = document.getElementById("rosario-info");
-    if (info && selected) {
-      info.textContent = `Hoje: ${selected.label}.`;
-    }
-    if (window.location.pathname !== target) {
-      setTimeout(() => {
-        window.location.replace(target);
-      }, 900);
-    }
-  </script>
-</Layout>
